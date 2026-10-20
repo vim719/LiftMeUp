@@ -1,14 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getDueUrgency } from "./dueUrgency";
 import type { LedgerEntry } from "../types/domain";
+import { localDateFromToday } from "../test/dates";
 
 // Computed relative to the real clock (not hardcoded literals) so these stay
-// correct regardless of when the suite runs — see the same convention in
-// LedgerPage.test.tsx's WARNING_DUE_DATE.
-const DAY_MS = 86_400_000;
-function daysFromToday(offset: number): string {
-  return new Date(Date.now() + offset * DAY_MS).toISOString().slice(0, 10);
-}
+// correct regardless of when the suite runs.
+const daysFromToday = localDateFromToday;
 
 const baseEntry: LedgerEntry = {
   id: 1,
@@ -85,5 +82,32 @@ describe("getDueUrgency", () => {
 
     expect(result.level).toBe("ok");
     expect(result.subtext).toBe("");
+  });
+
+  describe("in the evening, when the UTC date has already rolled over", () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+      // 8:30pm Oct 19 in New York (the suite's pinned TZ) is Oct 20 in UTC.
+      vi.setSystemTime(new Date("2026-10-20T00:30:00Z"));
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("counts days from the viewer's local date", () => {
+      const entry: LedgerEntry = { ...baseEntry, status: "Warning", due_date: "2026-10-24" };
+
+      const result = getDueUrgency(entry);
+
+      expect(result.dayDiff).toBe(5);
+      expect(result.subtext).toBe("Due in 5 days");
+    });
+
+    it("reads 'Due today' for a row due on the local date", () => {
+      const entry: LedgerEntry = { ...baseEntry, status: "Warning", due_date: "2026-10-19" };
+
+      expect(getDueUrgency(entry).subtext).toBe("Due today");
+    });
   });
 });

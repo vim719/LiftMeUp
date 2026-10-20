@@ -78,45 +78,73 @@ Two things worth calling out about this shape:
 
 ![LiftMeUp's empty-state message: "No elevators yet," on the Ledger tab, with numbered guidance pointing to the Manage Portfolio tab's lookup/add-building/add-elevator forms](docs/screenshots/empty-state.jpg)
 
-
-
 ## Prerequisites
 
-- **uv** (Python package/venv manager):
+You need four tools: **uv** (manages Python itself, the virtualenv, and all backend dependencies — you do not need to install Python separately), **Node.js + npm** (frontend), **pre-commit** (git hooks), and the **GitHub CLI** (`gh`). Local development uses SQLite, so no database install is needed.
+
+- **uv** — Python 3.14 is downloaded automatically by `uv sync` from `backend/pyproject.toml`.
 
   ```bash
+  # macOS / Linux
   curl -LsSf https://astral.sh/uv/install.sh | sh
+  # or, on macOS with Homebrew
+  brew install uv
+  # Windows (PowerShell)
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
 
-- **Node.js + npm** — install via [nvm](https://github.com/nvm-sh/nvm):
+  Verify with `uv --version`. Open a new terminal first if the command isn't found.
+
+- **Node.js + npm** — install via [nvm](https://github.com/nvm-sh/nvm) (npm ships with Node). Install the version pinned in `frontend/.nvmrc` (currently Node **24**), **not** whatever the newest LTS is — the frontend test environment misbehaves on newer majors.
 
   ```bash
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-  nvm install --lts
+  # open a new terminal, then from the repo root:
+  cd frontend
+  nvm install   # reads .nvmrc
+  nvm use       # run this in every new terminal before npm commands
   ```
 
-  Then, once inside `frontend/`, run `nvm use` to pick up the version pinned in `frontend/.nvmrc`.
+  Verify with `node --version` (should print `v24.x.x`) and `npm --version`. Windows users: use [nvm-windows](https://github.com/coreybutler/nvm-windows) and run `nvm install 24 && nvm use 24`.
 
-- **GitHub CLI** (`gh`) — used to sync PRs/reviews: [cli.github.com](https://cli.github.com). Run `gh auth login` once installed.
+- **GitHub CLI** (`gh`) — used to open PRs and sync reviews: `brew install gh` on macOS, or see [cli.github.com](https://cli.github.com). Then authenticate once:
+
+  ```bash
+  gh auth login   # choose GitHub.com → HTTPS → log in with a web browser
+  gh auth status  # should say "Logged in to github.com"
+  ```
 
 ## First-time setup
 
 ```bash
+# Clone (from wherever you keep projects)
+gh repo clone vim719/LiftMeUp
+cd LiftMeUp
+
 # Backend
 cd backend
-uv sync
-cp .env.example .env  # fill in secrets for local dev
+uv sync                      # creates backend/.venv with Python 3.14 + all deps
+cp .env.example .env         # fill in secrets for local dev (ANTHROPIC_API_KEY etc.)
+uv run python manage.py migrate
 
 # Frontend
 cd ../frontend
-npm ci
-cp .env.example .env.local  # Vite uses .env.local for local overrides; VITE_API_BASE_URL points to the backend API
+nvm use                      # Node 24, from .nvmrc
+npm ci                       # exact install from package-lock.json
+cp .env.example .env.local   # Vite reads .env.local; VITE_API_BASE_URL points at the backend
+npx playwright install chromium   # browser for the e2e tests
 
-# Git hooks (from repo root)
+# Git hooks + commit tooling (from repo root)
 cd ..
 uv tool install pre-commit
+uv tool install commitizen   # provides `cz commit` for guided Conventional Commits
 pre-commit install --install-hooks -t pre-commit -t pre-push -t commit-msg
+
+# Confirm everything is wired up
+bash scripts/check-env.sh    # should end with "0 warning(s), 0 failure(s)" (aside from being on main)
 ```
+
+To **re-sync** after pulling new changes: `uv sync` in `backend/`, `npm ci` in `frontend/`, and `pre-commit install --install-hooks -t pre-commit -t pre-push -t commit-msg` if `.pre-commit-config.yaml` changed. `scripts/check-env.sh` tells you which of these you need.
 
 ## Running it
 
