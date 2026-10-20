@@ -192,7 +192,14 @@ scripts/    Hook scripts (env check, commit-msg guard, format-on-save, etc.)
 
 ## Deployment
 
-Deployed on [Render](https://render.com) via `render.yaml` — two independently-deployed services (`liftmeup-backend`, `liftmeup-frontend`), split so a change under one directory never redeploys the other, and a docs-only change redeploys neither. Connecting the repo to Render and enabling "only deploy if checks pass" against GitHub CI is a one-time manual step in the Render dashboard.
+Deployed on [Render](https://render.com) via `render.yaml` — two independently-deployed services (`liftmeup-backend`, `liftmeup-frontend`) plus a Postgres database (`liftmeup-db`). Each service's `buildFilter` scopes it to its own directory, so a frontend change never redeploys the backend (and vice versa), and a docs-only change (markdown, `docs/**`) redeploys neither.
+
+**CI gates every deploy.** Render deploys each new commit on `main` (`autoDeployTrigger: commit`), and GitHub rulesets make `main` reachable only through code that has passed CI:
+
+- `backend-ci / test`, `frontend-ci / test`, and `Commit Lint / commitizen-check` must be green, with the branch up to date with `main` — no one can bypass this, including admins.
+- Changes land via PR with at least one approving review from another collaborator (repo admins may bypass the _review_ only, per `CONTRIBUTING.md`); force-pushes and deleting `main` are blocked.
+
+One-time setup: in the Render dashboard, choose **New → Blueprint**, select this repo, and set `ANTHROPIC_API_KEY` on `liftmeup-backend`. After the first deploy, confirm the backend's assigned hostname matches `ALLOWED_HOSTS` / `VITE_API_BASE_URL` in `render.yaml` (see the note there).
 
 ## Working with Claude Code in this repo
 
