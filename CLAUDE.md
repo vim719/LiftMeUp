@@ -19,6 +19,18 @@ scripts/    Hook scripts (env check, commit-msg guard, format-on-save, etc.)
 .knowledge-base/   Quick-reference cheat sheets for this project's toolchain
 ```
 
+## Dev environment setup
+
+Full walkthrough with Windows variants: `README.md` → "Prerequisites" and "First-time setup". The short version:
+
+1. **Install uv** (manages Python 3.14, the venv, and backend deps — no separate Python install): `curl -LsSf https://astral.sh/uv/install.sh | sh` or `brew install uv`.
+2. **Install Node 24 + npm via nvm** (npm ships with Node): install [nvm](https://github.com/nvm-sh/nvm), then from `frontend/` run `nvm install && nvm use`. Use the `.nvmrc` version, not the newest LTS — on newer majors jsdom's `localStorage` breaks and frontend tests fail for reasons that have nothing to do with the code.
+3. **Install and authenticate the GitHub CLI**: `brew install gh`, then `gh auth login`.
+4. **Install project deps**: `uv sync` (in `backend/`), `npm ci` and `npx playwright install chromium` (in `frontend/`).
+5. **Create env files**: `cp backend/.env.example backend/.env` and `cp frontend/.env.example frontend/.env.local`.
+6. **Install git hooks**: `uv tool install pre-commit && uv tool install commitizen`, then `pre-commit install --install-hooks -t pre-commit -t pre-push -t commit-msg`.
+7. **Verify**: `bash scripts/check-env.sh`.
+
 ## Opening ceremony
 
 At the start of every session, a `SessionStart` hook runs `scripts/check-env.sh` (read-only — never mutates anything) and injects its output into context. When you see that output:

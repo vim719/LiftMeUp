@@ -6,6 +6,7 @@ import App from "./App";
 import * as client from "./api/client";
 import * as logger from "./lib/logger";
 import type { AddressLookupResponse, Building, Elevator, LedgerEntry } from "./types/domain";
+import { localDateFromToday } from "./test/dates";
 
 describe("App", () => {
   beforeEach(() => {
@@ -489,7 +490,7 @@ describe("App", () => {
       inspection_type: "CAT1",
       last_inspection_date: "2026-01-01",
       building_name: "Tower A",
-      due_date: new Date(Date.now() + 10 * 86_400_000).toISOString().slice(0, 10),
+      due_date: localDateFromToday(10),
       status: "Warning",
       has_open_violation: false,
     };
@@ -711,7 +712,7 @@ describe("App", () => {
       inspection_type: "CAT1",
       last_inspection_date: "2026-01-01",
       building_name: "Tower A",
-      due_date: new Date(Date.now() + 3 * 86_400_000).toISOString().slice(0, 10),
+      due_date: localDateFromToday(3),
       status: "Warning",
       has_open_violation: false,
     };
@@ -722,7 +723,7 @@ describe("App", () => {
       inspection_type: "CAT5",
       last_inspection_date: "2026-01-01",
       building_name: "Tower A",
-      due_date: new Date(Date.now() + 60 * 86_400_000).toISOString().slice(0, 10),
+      due_date: localDateFromToday(60),
       status: "Compliant",
       has_open_violation: false,
     };
