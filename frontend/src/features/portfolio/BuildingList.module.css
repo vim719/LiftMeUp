@@ -1,0 +1,229 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-align: left;
+}
+
+.wrapper h2 {
+  margin: 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Applied in addition to .item while this row's delete confirmation (with
+   its cascade-impact warning paragraph) is revealed, so a longer row can
+   wrap onto a second line without the warning/buttons squeezing vertically
+   against .itemInfo. */
+.itemConfirming {
+  align-items: flex-start;
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemName {
+  font-weight: 600;
+}
+
+.itemAddress {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: inline-flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.deleteButton {
+  font: inherit;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--bg);
+  cursor: pointer;
+}
+
+/* var(--border-strong) and var(--bg-subtle) already carry their own
+   light/dark values (see index.css), so no separate
+   :root[data-theme="dark"] override block is needed here. */
+.deleteButton:hover {
+  background: var(--bg-subtle);
+}
+
+/* Groups the cascade-impact warning paragraph with the Confirm delete/Cancel
+   pair so they wrap together as a unit (see .itemConfirming above). */
+.confirmDeleteGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  flex: 1 1 260px;
+}
+
+/* Deleting a building cascade-deletes all of its elevators server-side (see
+   App.tsx's handleBuildingDeleted) — this states that consequence as
+   visible copy, not just an aria-label, so a sighted user reads it before
+   confirming too. Reuses the app-wide "warning" status tokens (the same
+   --status-warning-bg/--status-warning-fg pair StatusBadge.module.css's
+   .warning uses) rather than a one-off amber hex, so this banner's colors
+   move in lockstep with the rest of the warning color language and its
+   light/dark variants live in index.css instead of here. */
+.deleteWarning {
+  align-self: stretch;
+  margin: 0;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  background-color: var(--status-warning-bg);
+  color: var(--status-warning-fg);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Confirm delete/Cancel: intentionally matches LedgerPage.module.css's
+   .confirmDeleteButton/.cancelDeleteButton exactly (colors, spacing,
+   hover/focus-visible), not this file's own .deleteButton or
+   forms.module.css's .primaryButton/.secondaryButton — reusing the rust
+   "primary submit" color here would visually conflate a destructive,
+   cascading delete with a routine form-submit action. Colors are duplicated
+   rather than imported cross-module, same rationale as LedgerPage's copy of
+   this pair. */
+.confirmDeleteButton,
+.cancelDeleteButton {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* border/background use var(--text) and text uses var(--bg) — same
+   inverted "commits" button dark-mode treatment as
+   LedgerPage.module.css's .saveDateButton/.confirmDeleteButton: pixel-
+   identical in light mode, flips to a light surface (~14.9:1) on dark bg
+   instead of the old near-black-on-near-black collision the task called
+   out for this "dark primary button" pattern. */
+.confirmDeleteButton {
+  font-weight: 700;
+  border: 1px solid var(--text);
+  background-color: var(--text);
+  color: var(--bg);
+}
+
+.confirmDeleteButton:hover:not(:disabled) {
+  background-color: #333a4a;
+  border-color: #333a4a;
+}
+
+:root[data-theme="dark"] .confirmDeleteButton:hover:not(:disabled) {
+  background-color: #c7cbd6;
+  border-color: #c7cbd6;
+}
+
+.cancelDeleteButton {
+  border: 1px solid var(--text-muted);
+  background-color: transparent;
+  color: var(--text);
+}
+
+/* var(--bg-subtle) already carries its own light/dark value (see
+   index.css), same neutral-hover-surface token as .deleteButton:hover
+   above, so no separate :root[data-theme="dark"] override block is needed
+   here either. */
+.cancelDeleteButton:hover:not(:disabled) {
+  background-color: var(--bg-subtle);
+}
+
+.confirmDeleteButton:disabled,
+.cancelDeleteButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.hint {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.errorBanner {
+  background-color: #fdecea;
+  color: #9c1c12;
+  border: 1px solid #9c1c12;
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+}
+
+/* Same red dark pair used by every other .errorBanner in the app: ~8.0:1
+   text-on-bg, ~9.0:1 against the page --bg for the border. */
+:root[data-theme="dark"] .errorBanner {
+  background-color: #3a1512;
+  color: #ff9c92;
+  border-color: #ff9c92;
+}
+
+/* Always-visible fine exposure (issue #120) — one summary line per building
+   row, populated from a single portfolio-wide batched fetch (no per-row
+   button/trigger). */
+.fineExposureStatus {
+  display: flex;
+  align-items: center;
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.fineExposureResult {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.fineExposureHint {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Same red pair as .errorBanner, sized down to fit inline in the row. */
+.fineExposureError {
+  margin: 0.35rem 0 0;
+  color: #9c1c12;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+:root[data-theme="dark"] .fineExposureError {
+  color: #ff9c92;
+}

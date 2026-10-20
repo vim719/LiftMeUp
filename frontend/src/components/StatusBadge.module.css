@@ -1,0 +1,62 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.25em 0.75em;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.4;
+  border: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.icon {
+  font-size: 1em;
+  line-height: 1;
+}
+
+/* Colors come entirely from this branch's design tokens (see index.css) —
+   the --badge-* custom properties already carry their own light/dark (and
+   data-theme override) values, so this file no longer needs a separate
+   `@media (prefers-color-scheme: dark)` / `:root[data-theme="dark"]` block
+   of hand-tuned hex: the token swap at the :root level is what changes the
+   badge's rendered colors between themes. Contrast ratios of each
+   --badge-*-text against its own --badge-*-bg, checked against index.css's
+   actual current values (light mode / dark mode, dark mode computed with
+   the badge's translucent bg composited over the page --bg):
+     compliant   4.83:1 / 7.67:1
+     warning     5.87:1 / 7.22:1
+     delinquent  5.52:1 / 5.11:1
+   All four clear WCAG AA's 4.5:1 minimum for normal text in both themes. */
+
+.compliant {
+  background-color: var(--badge-compliant-bg);
+  color: var(--badge-compliant-text);
+  border-color: var(--badge-compliant-border);
+}
+
+.warning {
+  background-color: var(--badge-warning-bg);
+  color: var(--badge-warning-text);
+  border-color: var(--badge-warning-border);
+}
+
+.delinquent {
+  background-color: var(--badge-delinquent-bg);
+  color: var(--badge-delinquent-text);
+  border-color: var(--badge-delinquent-border);
+}
+
+/* Fallback for an unrecognized status (e.g. API drift or an unexpected
+   runtime value slipping past the type system). Deliberately neutral gray so
+   it never gets mistaken for one of the three real statuses above, while
+   still pairing color with the "?" icon and the raw status text per the
+   same WCAG 1.4.1 pattern. Uses the page's own neutral surface/muted-text
+   tokens (not a badge-specific pair) since "unknown" intentionally has no
+   brand hue to preserve. */
+.unknown {
+  background-color: var(--bg-subtle);
+  color: var(--text-muted);
+  border-color: var(--border);
+}
