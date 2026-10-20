@@ -44,7 +44,10 @@ services:
     name: liftmeup-backend
     runtime: python
     rootDir: backend
-    plan: starter
+    # Free plan: no payment method needed, but the service spins down after
+    # ~15 min idle and the next request takes ~1 min to wake it. Open the
+    # site a few minutes before any demo. Switch to `starter` to keep it warm.
+    plan: free
     autoDeployTrigger: commit
     buildFilter:
       paths:
@@ -70,9 +73,8 @@ services:
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
         value: https://liftmeup-frontend.onrender.com
-      # Sprint 02 AI risk-narration feature (docs/sprints/sprint-02.md).
-      # Not yet consumed by the code; set the real value in the Render
-      # dashboard's Environment tab once narration.py lands.
+      # Read by apps/compliance/narration.py for the AI briefing. Entered in
+      # the Render dashboard (prompted on Blueprint creation); never commit it.
       - key: ANTHROPIC_API_KEY
         sync: false
 
@@ -100,4 +102,7 @@ databases:
   - name: liftmeup-db
     databaseName: liftmeup
     user: liftmeup
-    plan: basic-256mb
+    # Free plan: 1 GB, and Render deletes free databases 30 days after
+    # creation (with an upgrade window first). Fine for the hackathon;
+    # move to `basic-256mb` before relying on it longer-term.
+    plan: free
