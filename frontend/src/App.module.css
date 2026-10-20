@@ -1,0 +1,237 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* <main> wraps the executive summary band, the AI narration panel, and the
+   ledger/timeline tabs. It previously had no layout styles of its own, so
+   its children (each a bordered/filled card) sat directly adjacent with
+   zero gap between them — the actual source of the "sections mashing
+   against each other" complaint, since .app's own gap only ever applied
+   between *its* direct children (header, forms, building list, main itself),
+   never inside main. Same section-level gap as .app for one consistent
+   page-level rhythm. */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Brand block: an inline mark (a rounded rust-fill square with two simple
+   up/down glyphs) alongside the LIFT/MEUP wordmark, plus a divider-separated
+   subtitle — grafted onto the existing header row without disturbing
+   ThemeToggle/PortfolioReset's placement. */
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.brandMark {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.brandMark svg {
+  width: 26px;
+  height: 26px;
+  flex: none;
+}
+
+.brandMarkFill {
+  fill: var(--rust);
+}
+
+.brandSub {
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--text-muted);
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+}
+
+.wordmarkRust {
+  color: var(--rust);
+}
+
+.wordmarkNavy {
+  color: var(--navy-text);
+}
+
+.header p {
+  color: var(--text-muted);
+  margin: 0.25rem 0 0;
+}
+
+.formsRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-5);
+}
+
+/* Sits between the Building Lookup panel (the primary, DOB-backed path) and
+   .formsRow (the manual-entry fallback pair below it), so a first-time user
+   reads the two as sequential alternatives — "look it up, or fall back to
+   entering it yourself" — rather than two unrelated, equally-weighted
+   features. Purely decorative rule lines via ::before/::after; the label
+   text itself stays in the accessibility tree (not aria-hidden) since it's
+   genuine wayfinding copy, not just visual flourish. */
+.formsDivider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.formsDivider::before,
+.formsDivider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Inner "Ledger views" tabs (Ledger/Timeline) — nested inside the outer
+   "Ledger" section panel, directly under the stat band + AI briefing card,
+   so this stays deliberately the *smaller, quieter* control: an understated
+   underline switcher, one step down in both type size and weight from the
+   outer .tabListOuter/.tabOuter pair below, so the two levels never read as
+   "four tabs in a row." Visual states: inactive (muted text), hover (darker
+   text + subtle fill), and active/selected (full-contrast text + surface
+   fill + an accent underline reusing --focus, the same token the ledger
+   table's row-highlight/editing-row treatments use, so "this is the
+   active/selected thing" reads consistently everywhere in the app).
+   Focus-visible styling is deliberately *not* redefined here — these are
+   real <button> elements, so they already inherit the global
+   `:focus-visible` outline treatment from index.css (3px solid var(--focus),
+   2px offset), the same ring every other interactive control in the app
+   uses. */
+.tabList {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0.4rem 0.875rem;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.tab:hover {
+  color: var(--text);
+  background: var(--bg-subtle);
+}
+
+.tab[aria-selected="true"] {
+  border-color: var(--border);
+  background: var(--bg-subtle);
+  color: var(--text);
+  /* Accent underline reinforces the aria-selected state visually (not just
+     via background), so the active tab is distinguishable even under a
+     color-contrast simulation, since it changes text color + shape (box
+     shadow), not hue alone. */
+  box-shadow: inset 0 -3px 0 0 var(--focus);
+}
+
+.tab[aria-selected="true"]:hover {
+  background: var(--bg-subtle);
+}
+
+/* Outer "Portfolio sections" tabs (Ledger/Manage Portfolio) — the page-level
+   choice a user makes about what they're doing, so it reads as primary
+   navigation: a filled segmented-pill track rather than an underline, with
+   larger/bolder labels and more generous padding than the inner .tabList/
+   .tab pair above. The two levels are told apart by *shape* as well as
+   scale (pill vs underline) so the distinction survives even a quick skim.
+   Selected state is a raised, opaque --bg-card pill with --shadow-card (not
+   a color change alone), which also keeps this mechanism visually distinct
+   from the inner tabs' underline-accent selected state — same underlying
+   `aria-selected` wiring, deliberately different visual metaphor per level.
+   Focus-visible is likewise left alone here for the same reason as .tab
+   above. */
+.tabListOuter {
+  display: inline-flex;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.tabOuter {
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  padding: var(--space-3) var(--space-5);
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.tabOuter:hover {
+  color: var(--text);
+  background: var(--bg-card);
+}
+
+.tabOuter[aria-selected="true"] {
+  background: var(--bg-card);
+  color: var(--text);
+  box-shadow: var(--shadow-card);
+}
+
+.tabOuter[aria-selected="true"]:hover {
+  background: var(--bg-card);
+}
+
+.errorBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background-color: #fdecea;
+  color: #9c1c12;
+  border: 1px solid #9c1c12;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26" fill="none" role="img" aria-label="LiftMeUp">
+  <rect x="1" y="1" width="24" height="24" rx="6" fill="#B4805A" />
+  <path d="M13 5.5v15M13 5.5 8.5 10M13 5.5 17.5 10M13 20.5 8.5 16M13 20.5 17.5 16"
+        stroke="#FBF7EE" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

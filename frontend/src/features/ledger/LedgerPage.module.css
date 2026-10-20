@@ -1,0 +1,816 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Bounds the table's horizontal scrolling to this container instead of the
+   whole page, so narrow (phone-width) viewports don't cause page-level
+   horizontal overflow when the table's natural width exceeds the viewport. */
+.tableScroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.table caption {
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.table th {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.sortButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  background: none;
+  border: none;
+  /* Vertical padding widens the click/tap target beyond the text's own
+     line-height (WCAG 2.5.8 recommends >= 24px; header row's line-height
+     alone is tighter than that) without changing the header cell's overall
+     height, since .table th/td already contributes 0.6rem of padding above
+     and below. Negative margin cancels the added width so the button's
+     visible position/alignment inside the <th> is unchanged. */
+  padding: 0.35rem 0;
+  margin: -0.35rem 0;
+  cursor: pointer;
+}
+
+.sortButton:hover {
+  text-decoration: underline;
+}
+
+.sortButton:focus-visible {
+  outline: 2px solid #8f5525;
+  outline-offset: 2px;
+}
+
+/* #8f5525 (reused from .filterRow select:focus) computes to WCAG-contrast
+   ratios of ~6.0:1 against this table's light-mode header background
+   (--bg #ffffff) but only ~3.0:1 against the dark-mode header background
+   (--bg #14161b) — right at WCAG 1.4.11's 3:1 non-text-contrast floor, with
+   essentially no margin for anti-aliasing/sub-pixel rendering differences.
+   Lightened to a warmer amber for dark mode only (~7.5:1 against #14161b),
+   same "give it real margin instead of eyeballing" treatment as the other
+   dark-mode color overrides in this file. */
+:root[data-theme="dark"] .sortButton:focus-visible {
+  outline-color: #d99a52;
+}
+
+.sortIndicator {
+  font-size: 0.75em;
+  line-height: 1;
+}
+
+/* Neutral "sortable but not currently sorted" affordance: a dimmed
+   bidirectional-arrow glyph, deliberately distinct from the active ▲/▼ so an
+   inactive column never visually implies it's already sorted (see the
+   caret-fallback issue this replaces). Decorative/aria-hidden (the
+   accessible name lives on the button's aria-label, which already spells
+   out sorted vs. not-sorted in words), so WCAG's 4.5:1 text-contrast
+   requirement doesn't strictly apply here, but 0.6 opacity was chosen to
+   clear the 3:1 non-text-UI floor anyway with real margin in both themes
+   (~4.2:1 light-mode-text-on-white, ~6.0:1 dark-mode-text-on-#14161b)
+   rather than relying on it being merely decorative. */
+.sortIndicatorNeutral {
+  opacity: 0.6;
+}
+
+/* Status-change highlight: a brief accent sweep on a row whose status just
+   recalculated, so an edit's effect on rank/status reads as a visible event
+   rather than a silent table reflow. Adapted from the design proposal in
+   docs/design/sprint-02-ledger-polish.html (the sweep-fade look/timing),
+   re-implemented against React's actual re-render model rather than that
+   file's imperative DOM-class toggling. */
+.highlighting {
+  position: relative;
+}
+
+.highlighting td {
+  position: relative;
+  z-index: 1;
+}
+
+.highlighting::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--focus-subtle);
+  border-left: 3px solid var(--focus);
+  animation: sweep-fade 1.7s ease-out forwards;
+  z-index: 0;
+}
+
+@keyframes sweep-fade {
+  0% {
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .highlighting::before {
+    animation: none;
+    opacity: 0;
+  }
+
+  .highlighting td {
+    background: var(--focus-subtle);
+  }
+}
+
+/* Status-meaning legend: a native <details>/<summary> disclosure so
+   first-time users can learn what triggers each status without any extra
+   state/JS, and without cluttering the table itself for returning users. */
+.legend {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  background: var(--bg-subtle);
+}
+
+.legendSummary {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Focus/hover affordance so the disclosure widget reads as interactive,
+   consistent with other clickable controls in this file. */
+.legendSummary:hover {
+  color: var(--focus);
+}
+
+.legendList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0.75rem 0 0;
+}
+
+.legendItem {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.legendItem dt {
+  flex-shrink: 0;
+}
+
+.legendItem dd {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+/* Ledger section header: an eyebrow-style title plus a live "N devices
+   across M buildings" count (always describing the full unfiltered
+   `entries`, never the post-filter/search subset — see the comment on
+   `uniqueBuildingCount` in LedgerPage.tsx), with the group-by-building
+   toggle at the trailing edge. */
+.ledgerHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ledgerTitleRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.875rem;
+  flex-wrap: wrap;
+}
+
+.ledgerTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.ledgerCount {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Group-by-building toggle switch: a visually-hidden checkbox driving a
+   custom track, so it reads as an on/off switch rather than a checkbox.
+   Track/thumb colors track the theme via var(--text-muted)/var(--bg); the
+   "on" state reuses var(--navy), which already has its own dark-mode value
+   in index.css, so no separate dark-mode override is needed here. */
+.groupToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.groupToggle input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.switchTrack {
+  width: 34px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--text-muted);
+  position: relative;
+  transition: background 0.15s ease;
+  flex: none;
+}
+
+.switchTrack::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.groupToggle input:checked + .switchTrack {
+  background: var(--navy);
+}
+
+.groupToggle input:checked + .switchTrack::after {
+  transform: translateX(14px);
+}
+
+.groupToggle input:focus-visible + .switchTrack {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Group header row, shown between building groups when grouping is active —
+   a single full-width cell naming the building and its device count, no
+   per-column data, so it reads as a section divider rather than a data row. */
+.groupRow td {
+  font-weight: 700;
+  padding: 0.5rem 0.8rem;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Building filter, as a chip row (role="group") — pill buttons, one active
+   at a time. The active chip is a solid navy fill (clears WCAG contrast by
+   a wide margin); inactive chips use an outlined/ghost treatment matching
+   this app's existing .cancelDateButton/.cancelDeleteButton pattern. */
+.chipRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.chip,
+.chipActive {
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 0.4375rem 0.8125rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.chip {
+  border: 1px solid var(--text-muted);
+  background: transparent;
+  color: var(--text);
+}
+
+.chip:hover {
+  background: var(--bg-subtle);
+}
+
+.chipActive {
+  border: 1px solid var(--navy);
+  background: var(--navy);
+  color: var(--navy-header-text);
+}
+
+.chipActive:hover {
+  filter: brightness(0.94);
+}
+
+/* Search box: styled to match the .filterRow select's field treatment
+   (same border/background/focus language) but as a plain text input rather
+   than a dropdown. */
+.searchInput {
+  font: inherit;
+  font-size: 0.875rem;
+  padding: 0.4375rem 0.75rem;
+  border-radius: 9px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg);
+  color: var(--text);
+  min-width: 220px;
+}
+
+.searchInput:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
+}
+
+/* Due-date urgency color-coding — the ledger's signature visual feature.
+   Shares its color language (var(--due-overdue)/var(--due-soon)/
+   var(--due-ok), aliased in index.css to the same badge palette
+   StatusBadge already uses) with any other surface showing due-date
+   urgency, so "how urgent is this" reads the same everywhere. */
+.dueOverdue {
+  color: var(--due-overdue);
+  font-weight: 600;
+}
+
+.dueSoon {
+  color: var(--due-soon);
+  font-weight: 600;
+}
+
+.dueOk {
+  color: var(--due-ok);
+}
+
+.dueSubtext {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.filterRow label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Matches the "drop box" treatment from the v3 design pass
+   (docs/design/liftmeup-executive-dashboard.html's .select-navy) — same
+   navy-tinted field + custom chevron as the portfolio forms' selects
+   (frontend/src/features/portfolio/forms.module.css), so filter controls
+   and add-elevator controls read as the same visual language. */
+.filterRow select {
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.4375rem 2rem 0.4375rem 0.625rem;
+  background-color: #edf0f4;
+  color: #1c3a63;
+  border: 1px solid #c9d2de;
+  border-radius: 9px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' stroke='%23566274' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.625rem center;
+  /* Same fix as forms.module.css's .field select: this SVG has no intrinsic
+     size (viewBox only), so without an explicit background-size the default
+     sizing algorithm scales it to fill the whole select box — a chevron far
+     larger than intended. 10x6px matches a typical native-select chevron. */
+  background-size: 10px 6px;
+}
+
+.filterRow select:focus {
+  outline: 2px solid #8f5525;
+  outline-offset: 1px;
+}
+
+/* Dark-mode counterpart to the navy chip above (same rationale as
+   forms.module.css's .field select dark rule) — re-derives the light
+   treatment's text/chevron-on-tinted-chip relationship against the dark
+   palette rather than just lightening a border: ~8.8:1 text-on-chip, ~5.7:1
+   chevron-on-chip. */
+:root[data-theme="dark"] .filterRow select {
+  background-color: #232e46;
+  color: #c3d1ea;
+  border-color: #5b6a94;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' stroke='%239aa8cc' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* Marks the row whose elevator is currently the target of the (parent-owned)
+   Edit form, alongside the inline date input being disabled for that row.
+   Persistent (not animated, unlike .highlighting's transient sweep) — it
+   stays for as long as the row's Edit form is open, using the same
+   --focus/--focus-subtle tokens as .highlighting for a consistent "this is
+   the active/selected thing" visual language across the app.
+   Deliberately painted directly on the <td> background/box-shadow rather
+   than via a ::before overlay: .highlighting's ::before sits at z-index: 0,
+   below its <td>'s z-index: 1 stacking context, so when both classes land
+   on the same row .editingRow's opaque td background naturally sits on top
+   and wins outright — no flicker, and because both reuse the same color
+   tokens there's no visible seam either way. */
+.editingRow td {
+  background-color: var(--focus-subtle);
+  box-shadow: inset 3px 0 0 0 var(--focus);
+}
+
+.dateInput {
+  font: inherit;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid #7a8091;
+  border-radius: 4px;
+}
+
+/* Same #7a8091 -> #9aa4b8 dark-mode lightening as .filterRow select above. */
+:root[data-theme="dark"] .dateInput {
+  border-color: #9aa4b8;
+}
+
+/* Styling for the inline date input's Save/Cancel confirm affordance,
+   deliberately matching ElevatorForm's .primaryButton/.secondaryButton
+   visual language (see frontend/src/features/portfolio/forms.module.css)
+   so the same commit/discard action pair reads consistently everywhere in
+   the app: Save is the filled, bold, "commits" action; Cancel is the
+   outlined, lower-priority "discards" action. Colors are duplicated rather
+   than imported cross-module to keep each CSS module self-contained. */
+.dateActions {
+  display: inline-flex;
+  gap: 0.4rem;
+  margin-left: 0.5rem;
+}
+
+.saveDateButton,
+.cancelDateButton {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* border/background use var(--text) and text uses var(--bg) — an inverted
+   "commits" button that tracks the theme automatically: in light mode this
+   is pixel-identical to the old literal #1f2430/#fff, and in dark mode it
+   flips to a light surface (#e7e9ee on #14161b, ~14.9:1) instead of the old
+   hardcoded near-black-on-white staying near-black and vanishing into the
+   dark page background. */
+.saveDateButton {
+  font-weight: 700;
+  border: 1px solid var(--text);
+  background-color: var(--text);
+  color: var(--bg);
+}
+
+.saveDateButton:hover:not(:disabled) {
+  background-color: #333a4a;
+  border-color: #333a4a;
+}
+
+/* Dark-mode hover: a dimmer version of the light-mode-inverted button
+   surface (still ~11.2:1 against --bg text), since #333a4a (the light-mode
+   hover shade) is now far too dark against the light dark-mode button bg. */
+:root[data-theme="dark"] .saveDateButton:hover:not(:disabled) {
+  background-color: #c7cbd6;
+  border-color: #c7cbd6;
+}
+
+/* Text/border colors chosen to clear WCAG AA (>= 4.5:1 for text, >= 3:1 for
+   the border as a UI component boundary), same as ElevatorForm's
+   .secondaryButton. var(--text)/var(--text-muted) keep light mode
+   pixel-identical to the old #1f2430/#4b5261 literals while picking up the
+   theme's dark-mode values automatically. */
+.cancelDateButton {
+  border: 1px solid var(--text-muted);
+  background-color: transparent;
+  color: var(--text);
+}
+
+.cancelDateButton:hover:not(:disabled) {
+  background-color: #f0f1f3;
+}
+
+/* Dark-mode hover overlay for the mostly-transparent cancel button. */
+:root[data-theme="dark"] .cancelDateButton:hover:not(:disabled) {
+  background-color: #262b35;
+}
+
+.saveDateButton:disabled,
+.cancelDateButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Row-actions layout for the trailing Actions column (Edit/Delete plus the
+   secondary Remediation steps/Device details links). Two deliberate rows
+   instead of leaving four-plus inline elements to wrap wherever the browser
+   happens to break — row 1 groups the equal-weight primary actions (Edit,
+   and either Delete or its Confirm/Cancel pair); row 2 groups the
+   lower-priority text-style links. Both rows left-align and share the same
+   column, so the two rows read as one deliberate block rather than two
+   unrelated groups. */
+.actionsCell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.actionsPrimary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.actionsSecondary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* Edit and Delete deliberately share one visual weight class (same border,
+   background, padding, radius) — see the product feedback this addresses:
+   these are the row's two primary, equal-priority actions, so neither
+   should read as more "default" than the other. */
+.editButton,
+.deleteButton {
+  font: inherit;
+  padding: 0.3rem 0.7rem;
+  min-width: 4.5rem;
+  text-align: center;
+  border: 1px solid #7a8091;
+  border-radius: 6px;
+  background: var(--bg);
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background: #f0f1f3;
+}
+
+/* Same #7a8091 -> #9aa4b8 dark-mode lightening as .filterRow select/
+   .dateInput above; background already tracks the theme via var(--bg). */
+:root[data-theme="dark"] .editButton,
+:root[data-theme="dark"] .deleteButton {
+  border-color: #9aa4b8;
+}
+
+:root[data-theme="dark"] .deleteButton:hover {
+  background: #262b35;
+}
+
+/* Styling for the per-row Delete action's inline reveal-confirm pair,
+   deliberately matching .saveDateButton/.cancelDateButton's (and, in turn,
+   ElevatorForm's .primaryButton/.secondaryButton) commit/discard visual
+   language: Confirm delete is the filled, bold "commits" action; Cancel is
+   the outlined, lower-priority "discards" action. Colors are duplicated
+   rather than imported cross-module to keep each CSS module self-contained,
+   same rationale as .dateActions above. */
+.deleteActions {
+  display: inline-flex;
+  gap: 0.4rem;
+}
+
+.confirmDeleteButton,
+.cancelDeleteButton {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Same inverted-button dark-mode treatment as .saveDateButton above (var()
+   substitution keeps light mode pixel-identical, flips to a light surface
+   on dark bg instead of near-black-on-near-black). */
+.confirmDeleteButton {
+  font-weight: 700;
+  border: 1px solid var(--text);
+  background-color: var(--text);
+  color: var(--bg);
+}
+
+.confirmDeleteButton:hover:not(:disabled) {
+  background-color: #333a4a;
+  border-color: #333a4a;
+}
+
+:root[data-theme="dark"] .confirmDeleteButton:hover:not(:disabled) {
+  background-color: #c7cbd6;
+  border-color: #c7cbd6;
+}
+
+.cancelDeleteButton {
+  border: 1px solid var(--text-muted);
+  background-color: transparent;
+  color: var(--text);
+}
+
+.cancelDeleteButton:hover:not(:disabled) {
+  background-color: #f0f1f3;
+}
+
+:root[data-theme="dark"] .cancelDeleteButton:hover:not(:disabled) {
+  background-color: #262b35;
+}
+
+.confirmDeleteButton:disabled,
+.cancelDeleteButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.detailsButton {
+  font: inherit;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid #1c3a63;
+  border-radius: 6px;
+  background: var(--bg);
+  color: #1c3a63;
+  cursor: pointer;
+}
+
+.detailsButton:hover {
+  background: #edf0f4;
+}
+
+/* #1c3a63 against the dark-mode --bg is ~1.6:1, the same failure already
+   fixed for .wordmarkNavy in App.module.css — reuse that same lightened
+   navy (~5.8:1 against --bg) for consistency across the app's one "navy"
+   brand color. */
+:root[data-theme="dark"] .detailsButton {
+  border-color: #6f93c9;
+  color: #6f93c9;
+}
+
+:root[data-theme="dark"] .detailsButton:hover {
+  background: #1a2436;
+}
+
+/* Opens the ElevatorDetailDrawer (a slide-over panel with the row's full
+   detail set) for this row. Deliberately defined exactly once in this file
+   — a previous draft accidentally defined `.detailLink` twice with
+   different colors/padding, where the second definition silently won and
+   the first was dead code. */
+.detailLink {
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--rust);
+  background: none;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.detailLink:hover {
+  text-decoration: underline;
+  color: var(--rust-strong);
+}
+
+.detailCell {
+  padding: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.detailPanel {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  background: #edf0f4;
+  border-left: 3px solid #1c3a63;
+}
+
+.detailPanel dt {
+  font-weight: 700;
+  color: #1c3a63;
+}
+
+.detailPanel dd {
+  margin: 0.15rem 0 0;
+}
+
+/* Same navy lightening as .detailsButton; the light #edf0f4 panel surface
+   becomes a navy-tinted dark surface instead of floating as a light
+   rectangle on the dark page. */
+:root[data-theme="dark"] .detailPanel {
+  background: #1a2436;
+  border-left-color: #6f93c9;
+}
+
+:root[data-theme="dark"] .detailPanel dt {
+  color: #6f93c9;
+}
+
+.errorBanner {
+  background-color: #fdecea;
+  color: #9c1c12;
+  border: 1px solid #9c1c12;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+}
+
+/* Desaturated-but-still-red dark pair so the error banner keeps its "this
+   is an error" hue instead of collapsing to generic gray: ~8.0:1 text-on-bg,
+   ~9.0:1 text against the page --bg for the border. */
+:root[data-theme="dark"] .errorBanner {
+  background-color: #3a1512;
+  color: #ff9c92;
+  border-color: #ff9c92;
+}
+
+/* Secondary annotation for a DOB-sourced elevator's authoritative device
+   number, shown alongside (never in place of) the human-chosen
+   device_identifier label — see the module doc comment on `LedgerEntry` in
+   types/domain.ts. Muted so it reads as supplementary detail, not the
+   primary label. */
+.dobDeviceNumber {
+  display: inline-block;
+  margin-left: 0.4rem;
+  color: var(--text-muted);
+}
+
+/* Status cell wrapper: groups StatusBadge with the open-violation indicator
+   (when present) as one compound unit with a consistent, deliberate gap
+   between them, rather than the two pills relying on the indicator's own
+   margin-left to separate from whatever precedes it. */
+.statusCell {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* Open-violation indicator (issue #120), shown alongside StatusBadge in the
+   same cell. Deliberately shares StatusBadge's exact pill geometry (padding,
+   font-size, font-weight, line-height, border-radius, border width — see
+   .badge in StatusBadge.module.css) so the two read as one coherent badge
+   family rather than two mismatched shapes bumped up against each other.
+   Differentiated by color instead: StatusBadge's palette is all reds/ambers/
+   greens (severity), so this uses the app's other brand hue (navy, the same
+   --navy-soft/-border/-text trio already used for the "chip" language
+   elsewhere — .panelIcon, .field select) to read as a distinct *category* of
+   information (an additional flag) rather than a competing severity color.
+   Icon+text still pairs with color per WCAG 1.4.1, matching StatusBadge's
+   own convention. Tokens re-derive automatically per theme, so (unlike the
+   red palette this replaced) no separate dark-mode override block is
+   needed. */
+.violationBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.25em 0.75em;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+  background-color: var(--navy-soft);
+  color: var(--navy-soft-text);
+  border: 2px solid var(--navy-soft-border);
+}
+
+.violationIcon {
+  font-size: 1em;
+  line-height: 1;
+}

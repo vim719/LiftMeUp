@@ -1,0 +1,28 @@
+{
+  // MD013 (line-length) is intentionally disabled: this repo's convention is
+  // one continuous line per paragraph (no manual hard-wrapping), enforced by
+  // Prettier's `proseWrap: never` instead of a line-length limit.
+  "config": {
+    "default": true,
+    "MD013": false,
+    // Plain reference URLs are the established style in this repo's
+    // knowledge-base/ADR "References" sections — not a defect.
+    "MD034": false,
+    // The source PRD and sprint docs use bold lead-ins as informal section
+    // markers rather than real headings; not worth restructuring the PRD's
+    // authored content to satisfy this rule.
+    "MD036": false,
+    // New in this version's markdownlint bump (#52, 2026-07-25). Conflicts
+    // with Prettier's markdown table formatting, which pads cells to align
+    // columns (including empty cells) — the two hooks fight over every
+    // table with a short/empty cell otherwise. Prettier already owns table
+    // formatting in this repo; this rule is redundant on top of it.
+    "MD060": false,
+    // CHANGELOG.md (commitizen-generated) repeats "### Feat"/"### Fix"/etc.
+    // under every "## vX.Y.Z" version section by design — scope the
+    // duplicate-heading check to siblings so that's not flagged.
+    "MD024": { "siblings_only": true }
+  },
+  "globs": ["**/*.md"],
+  "ignores": ["**/node_modules/**", "**/.venv/**", "**/dist/**"]
+}
