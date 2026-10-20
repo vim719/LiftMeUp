@@ -1,0 +1,103 @@
+# Render Blueprint for Riser.
+# Two services only, split so a change under one directory never triggers a
+# deploy of the other, and a docs-only change (root markdown / docs/**)
+# triggers neither. Both services now use autoDeployTrigger: commit — see
+# the incident notes below for why. Branch protection on main already
+# requires CI to pass before anything merges, so neither service deploys
+# unreviewed/failing code — this only removes Render's own (buggy, for
+# these services) webhook-driven wait for a second, redundant confirmation
+# that CI passed.
+#
+# NOTE (manual step at setup time): connecting this repo to Render in the
+# first place (New + > Blueprint > select this repo) is still a one-time
+# manual step in the Render dashboard.
+#
+# NOTE: "riser-backend" was already claimed elsewhere on Render, so the
+# live service was assigned riser-backend-y19g.onrender.com instead of the
+# unsuffixed name. ALLOWED_HOSTS/VITE_API_BASE_URL below reflect the actual
+# assigned hostname — if this service is ever deleted and recreated, verify
+# the assigned hostname again before relying on it.
+#
+# INCIDENT (2026-07-28): riser-backend's Auto-Deploy silently stopped
+# firing for ~22h/36+ commits despite green CI the whole time and an
+# identically-configured riser-frontend deploying normally — Render's
+# Events tab showed zero attempts (not even a skipped/filtered one) between
+# the last successful auto-deploy and several "Triggered by you via CLI"
+# manual deploys, ruling out checksPass/build-filter logic as the cause.
+# Toggling riser-backend's Auto-Deploy setting off then back on in the
+# dashboard (a suspected fix for a dropped webhook subscription) did NOT
+# resolve it — the very next merged, CI-green commit still needed a manual
+# deploy. Switched riser-backend to autoDeployTrigger: commit to route
+# around whatever's broken in Render's checksPass handling for this
+# specific service, rather than depending on a webhook path that's proven
+# unreliable here.
+#
+# INCIDENT (2026-07-29): riser-frontend repeated the exact same silent-
+# failure pattern — checksPass stopped triggering deploys despite green CI,
+# with no corresponding entry in Render's Events tab. Applied the same fix:
+# switched riser-frontend to autoDeployTrigger: commit rather than
+# continuing to depend on a webhook path proven unreliable on this Render
+# account for both services.
+
+services:
+  - type: web
+    name: riser-backend
+    runtime: python
+    rootDir: backend
+    plan: starter
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - backend/**
+      ignoredPaths:
+        - backend/**/*.md
+    buildCommand: >-
+      curl -LsSf https://astral.sh/uv/install.sh | sh &&
+      uv sync --locked --no-dev &&
+      uv run python manage.py collectstatic --noinput &&
+      uv run python manage.py migrate
+    startCommand: "uv run gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.production
+      - key: ALLOWED_HOSTS
+        value: riser-backend-y19g.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: riser-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://riser-frontend.onrender.com
+      # Sprint 02 AI risk-narration feature (docs/sprints/sprint-02.md).
+      # Not yet consumed by the code; set the real value in the Render
+      # dashboard's Environment tab once narration.py lands.
+      - key: ANTHROPIC_API_KEY
+        sync: false
+
+  - type: web
+    name: riser-frontend
+    runtime: static
+    rootDir: frontend
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - frontend/**
+      ignoredPaths:
+        - frontend/**/*.md
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://riser-backend-y19g.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: riser-db
+    databaseName: riser
+    user: riser
+    plan: basic-256mb

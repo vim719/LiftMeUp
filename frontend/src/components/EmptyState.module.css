@@ -1,0 +1,152 @@
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  border: 2px dashed #b7bdc9;
+  border-radius: 12px;
+  background-color: #fafbfc;
+}
+
+/* Dark-mode counterparts, same reasoning as TimelinePage.module.css's
+   .emptyState: #fafbfc (near-white card) would float on the dark page,
+   #1c1f26 matches --bg-subtle's dark value instead; #b7bdc9's dashed border
+   is lightened to clear 3:1 against the dark --bg (~3.4:1). */
+:root[data-theme="dark"] .emptyState {
+  border-color: #626b7d;
+  background-color: #1c1f26;
+}
+
+.icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.heading {
+  margin: 0;
+}
+
+.lede {
+  margin: 0;
+  max-width: 48ch;
+  color: var(--text-muted);
+}
+
+.steps {
+  margin: 0;
+  padding: 0;
+  max-width: 48ch;
+  text-align: left;
+  list-style-position: inside;
+  color: var(--text);
+}
+
+.steps li + li {
+  margin-top: 0.35rem;
+}
+
+.steps strong {
+  color: var(--text);
+}
+
+/* Separates the "Try sample data" shortcut from the three numbered steps
+   above with a rule + its own lede, so it reads as an alternative/faster
+   path rather than an unlabeled 4th step competing with the real
+   instructions. */
+.altPath {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 48ch;
+  margin-top: 0.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px dashed #b7bdc9;
+}
+
+/* Same #b7bdc9 -> #626b7d dark-mode lightening as .emptyState's border. */
+:root[data-theme="dark"] .altPath {
+  border-top-color: #626b7d;
+}
+
+.altPathLede {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+/* Matches the .primaryButton visual language in
+   ../features/portfolio/forms.module.css (same rust fill/contrast rationale
+   — see that file's comment) so the single committing action here reads
+   consistently with "Add building"/"Add elevator" elsewhere in the app. */
+.primaryButton {
+  font: inherit;
+  font-weight: 700;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid #8f5525;
+  border-radius: 6px;
+  background-color: #8f5525;
+  color: #fff9f1;
+  cursor: pointer;
+}
+
+.primaryButton:hover:not([aria-disabled="true"]) {
+  background-color: #7a4720;
+  border-color: #7a4720;
+}
+
+/* aria-disabled (not the native `disabled` attribute) marks the in-flight
+   state — see EmptyState.tsx's handleSeedClick guard comment for why: native
+   `disabled` on a focused element forces the browser to blur it, silently
+   stranding a keyboard/screen-reader user's focus on <body> mid-request. */
+.primaryButton[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.errorBanner {
+  background-color: #fdecea;
+  color: #9c1c12;
+  border: 1px solid #9c1c12;
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+}
+
+/* Same red dark pair as LedgerPage.module.css's/TimelinePage.module.css's
+   .errorBanner: ~8.0:1 text-on-bg, ~9.0:1 against the page --bg. */
+:root[data-theme="dark"] .errorBanner {
+  background-color: #3a1512;
+  color: #ff9c92;
+  border-color: #ff9c92;
+}
+
+/* Reuses StatusBadge.module.css's .compliant palette (#0b6b2c on #e6f4ea,
+   ~5.9:1 contrast) so a "something succeeded" message reads consistently
+   with the rest of the app's color language, rather than inventing a new
+   green. Always rendered (even empty) so the role="status" live region is
+   registered in the accessibility tree before its text changes — some
+   screen readers miss the first announcement from a live region that's
+   inserted into the DOM at the same moment its content is set. */
+.successMessage {
+  margin: 0;
+  min-height: 1.5em;
+}
+
+.successMessage:not(:empty) {
+  background-color: #e6f4ea;
+  color: #0b6b2c;
+  border: 1px solid #0b6b2c;
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+}
+
+/* Same dark-mode green as StatusBadge.module.css's .compliant, so this
+   reused "compliant" palette stays visually identical across both files:
+   ~8.7:1 text-on-bg. */
+:root[data-theme="dark"] .successMessage:not(:empty) {
+  background-color: #0f2f1c;
+  color: #7fdba0;
+  border-color: #7fdba0;
+}
