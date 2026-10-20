@@ -6,6 +6,7 @@ import { LedgerPage } from "./LedgerPage";
 import * as client from "../../api/client";
 import * as logger from "../../lib/logger";
 import type { Building, LedgerEntry, SeedDemoDataResponse } from "../../types/domain";
+import { localDateFromToday } from "../../test/dates";
 
 const buildings: Building[] = [
   {
@@ -29,7 +30,7 @@ const buildings: Building[] = [
 // Computed relative to the real clock (not a hardcoded literal) so this
 // stays "due soon" regardless of when the suite runs — a fixed date string
 // silently drifts into the past over time without ever failing the test.
-const WARNING_DUE_DATE = new Date(Date.now() + 5 * 86_400_000).toISOString().slice(0, 10);
+const WARNING_DUE_DATE = localDateFromToday(5);
 
 const mixedStatusEntries: LedgerEntry[] = [
   {

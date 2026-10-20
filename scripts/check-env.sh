@@ -24,8 +24,10 @@ fi
 if command -v node >/dev/null 2>&1; then
   node_version="$(node --version)"
   if [ -f frontend/.nvmrc ]; then
-    expected="v$(cat frontend/.nvmrc)"
-    if [ "$node_version" = "$expected" ]; then
+    expected="v$(tr -d '[:space:]' < frontend/.nvmrc)"
+    # .nvmrc may pin just a major ("24") or a full version ("24.11.0"):
+    # compare only as many components as it specifies.
+    if [ "$node_version" = "$expected" ] || [[ "$node_version" == "$expected".* ]]; then
       pass "node $node_version matches frontend/.nvmrc"
     else
       warn "node $node_version != frontend/.nvmrc ($expected) — run: (cd frontend && nvm use && npm ci). The pre-commit/pre-push hooks run vitest with whatever node is on PATH: on an unsupported node version, jsdom's internals (e.g. localStorage) can misbehave and fail tests in ways that look like real bugs but are pure environment drift — switch node and reinstall node_modules before chasing a frontend test failure that mentions jsdom internals."
@@ -74,11 +76,13 @@ else
 fi
 
 section "Env files"
-for dir in backend frontend; do
-  if [ -f "$dir/.env.example" ] && [ ! -f "$dir/.env" ]; then
-    warn "$dir/.env missing — copy from $dir/.env.example and fill in secrets"
-  fi
-done
+if [ -f backend/.env.example ] && [ ! -f backend/.env ]; then
+  warn "backend/.env missing — run: cp backend/.env.example backend/.env (then fill in secrets)"
+fi
+# Vite reads .env.local for local overrides (see frontend/.env.example).
+if [ -f frontend/.env.example ] && [ ! -f frontend/.env.local ] && [ ! -f frontend/.env ]; then
+  warn "frontend/.env.local missing — run: cp frontend/.env.example frontend/.env.local"
+fi
 
 section "Git hooks"
 if command -v pre-commit >/dev/null 2>&1; then

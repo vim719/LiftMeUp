@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: "jsdom",
+    // Pinned to a non-UTC zone so local-vs-UTC date bugs fail in CI (which
+    // runs in UTC) instead of only on a developer's machine in the evening.
+    env: { TZ: "America/New_York" },
     setupFiles: "./src/test/setup.ts",
     exclude: ["**/node_modules/**", "**/dist/**", "e2e/**"],
     coverage: {
