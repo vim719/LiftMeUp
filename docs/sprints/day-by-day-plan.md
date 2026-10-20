@@ -1,6 +1,6 @@
 # Day-by-day plan: 2026-07-21 → 2026-07-29
 
-Companion to `sprint-01.md` and `sprint-02.md` — this is the concrete, per-person schedule for the remainder of the MVP window, covering the tail of Sprint 01 through the final capstone presentation. See `docs/prd/Riser-PRD.md` for the requirements this plan builds toward, and `docs/architecture/integration-contracts.md` for the exact API contracts and external-API integration details referenced below.
+Companion to `sprint-01.md` and `sprint-02.md` — this is the concrete, per-person schedule for the remainder of the MVP window, covering the tail of Sprint 01 through the final capstone presentation. See `docs/prd/LiftMeUp-PRD.md` for the requirements this plan builds toward, and `docs/architecture/integration-contracts.md` for the exact API contracts and external-API integration details referenced below.
 
 ## Context
 
@@ -39,7 +39,7 @@ Checked this schedule for days where two people's tasks land in the same file. T
 ## Housekeeping to fold in on day 1 (not a separate task later)
 
 - Update `docs/sprints/sprint-01.md` and `docs/sprints/sprint-02.md` per-person checklists to reflect (a) that Sprint 01's P0 items are actually done, and (b) the real Sprint 02 scope/dates (compressed to 7/26–7/29, AI agent + DOB stretch added). This closes out issue #2's remaining checklist item.
-- ~~Decide whether the v2 PRD replaces the canonical PRD~~ — done: `docs/prd/Riser-PRD.md` (and its `.docx` submission copy) now _is_ the v2 content, on this branch/PR. No decision left to make here.
+- ~~Decide whether the v2 PRD replaces the canonical PRD~~ — done: `docs/prd/LiftMeUp-PRD.md` (and its `.docx` submission copy) now _is_ the v2 content, on this branch/PR. No decision left to make here.
 
 ## Day-by-day
 
@@ -114,7 +114,7 @@ Narration is the simpler of the two remaining features (one endpoint, one panel)
 
 ### Wed 2026-07-29 — Final capstone presentation
 
-**Unscheduled consolidation work landed this morning ahead of rehearsal:** PR #127 (Architecture Lead's executive-UI redesign implementing `docs/design/riser-executive-dashboard.html` per Design Lead's mockup) and PR #128 (Design Lead's matching style pass on the same mockup) opened independently the same evening two days ago, representing duplicate implementations of the same design spec. PR #129 (bundled backend fix + now-superseded frontend branch) was closed; PR #130 (just the backend fix, cherry-picked onto a clean branch) was merged via admin bypass. A deliberate hand-merge onto `feat/executive-ui-consolidated` kept the best of both PRs plus real bug fixes neither had independently: consolidated design tokens, restored a deleted `:focus-visible` ring, new `ExecutiveSummaryBand`/`ElevatorDetailDrawer` components, ledger search/chips/group-by-building, forms restyle, `NarrationPanel` paragraph structure, and a live design-feedback polish pass. Same session: tab restructuring split the app into "Ledger" (stat band, AI briefing, Ledger/Timeline sub-tabs) and "Manage Portfolio" (address lookup, forms, buildings list) tabs; a real bug was fixed where `backend/.env` wasn't being auto-loaded for local dev (silently broke the AI narration endpoint); outer and inner tab levels were visually distinguished. All of this is consolidated in open PR #131, currently under review (this docs-sync pass is part of that review). See `docs/team/status-log.md`'s new 2026-07-29 entry for full details and per-source-PR attribution.
+**Unscheduled consolidation work landed this morning ahead of rehearsal:** PR #127 (Architecture Lead's executive-UI redesign implementing `docs/design/liftmeup-executive-dashboard.html` per Design Lead's mockup) and PR #128 (Design Lead's matching style pass on the same mockup) opened independently the same evening two days ago, representing duplicate implementations of the same design spec. PR #129 (bundled backend fix + now-superseded frontend branch) was closed; PR #130 (just the backend fix, cherry-picked onto a clean branch) was merged via admin bypass. A deliberate hand-merge onto `feat/executive-ui-consolidated` kept the best of both PRs plus real bug fixes neither had independently: consolidated design tokens, restored a deleted `:focus-visible` ring, new `ExecutiveSummaryBand`/`ElevatorDetailDrawer` components, ledger search/chips/group-by-building, forms restyle, `NarrationPanel` paragraph structure, and a live design-feedback polish pass. Same session: tab restructuring split the app into "Ledger" (stat band, AI briefing, Ledger/Timeline sub-tabs) and "Manage Portfolio" (address lookup, forms, buildings list) tabs; a real bug was fixed where `backend/.env` wasn't being auto-loaded for local dev (silently broke the AI narration endpoint); outer and inner tab levels were visually distinguished. All of this is consolidated in open PR #131, currently under review (this docs-sync pass is part of that review). See `docs/team/status-log.md`'s new 2026-07-29 entry for full details and per-source-PR attribution.
 
 - Morning: last-look rehearsal, fix only true blockers (following consolidation work above).
 - Present.
@@ -129,7 +129,7 @@ Narration is the simpler of the two remaining features (one endpoint, one panel)
 
 ## Post-MVP backlog (not scheduled this sprint)
 
-- **Filing-summary / proof-of-service generation** (PRD Journey 3, clarified 2026-07-22 per Frontend Dev): pre-filled filing-summary PDF for the manager to hand/email to their licensed inspection agency, plus recordkeeping of the resulting proof-of-service against the device. Real P3 value, proposed as a possible swap for the DOB integration slot — not adopted as a swap (see above), but worth picking up post-capstone. See `docs/prd/Riser-PRD.md` §3 and `docs/design/mental-model-briefing.md` §6.
+- **Filing-summary / proof-of-service generation** (PRD Journey 3, clarified 2026-07-22 per Frontend Dev): pre-filled filing-summary PDF for the manager to hand/email to their licensed inspection agency, plus recordkeeping of the resulting proof-of-service against the device. Real P3 value, proposed as a possible swap for the DOB integration slot — not adopted as a swap (see above), but worth picking up post-capstone. See `docs/prd/LiftMeUp-PRD.md` §3 and `docs/design/mental-model-briefing.md` §6.
 - **Auth / read-write vs. read-only enforcement** (confirmed out of scope for the MVP demo 2026-07-26 — see `docs/adr/0002-no-auth-for-mvp.md`, issue #76): the PRD's property-manager (read/write) vs. building-owner (read-only) distinction, currently unenforced. Nice-to-have if the team gets ahead of schedule before 7/29; otherwise post-capstone.
 
 ## Verification

@@ -16,10 +16,10 @@ class TestBuilding:
     def test_create_and_str(self) -> None:
         """A Building can be created and its ``__str__`` returns its name."""
         building = Building.objects.create(
-            name="10 Riser Plaza",
-            address="10 Riser Plaza, New York, NY 10001",
+            name="10 LiftMeUp Plaza",
+            address="10 LiftMeUp Plaza, New York, NY 10001",
         )
-        assert str(building) == "10 Riser Plaza"
+        assert str(building) == "10 LiftMeUp Plaza"
         assert building.created_at is not None
         assert building.updated_at is not None
 

@@ -1,7 +1,7 @@
 """Proof-of-concept resolver for the address → BIN → DOB-devices lookup.
 
 This module is the backend spine of the rev-2 "add a building by address"
-feature (PRD Journey 1): a manager types a street address, and Riser
+feature (PRD Journey 1): a manager types a street address, and LiftMeUp
 resolves it to a BIN server-side and pulls that building's known elevator
 devices — with their latest CAT1/CAT5 filing dates — straight from NYC's
 public Open Data feed. No manual re-entry, no key, no scraping.

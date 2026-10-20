@@ -1,1 +1,1 @@
-"""The Riser backend's Django project package."""
+"""The LiftMeUp backend's Django project package."""

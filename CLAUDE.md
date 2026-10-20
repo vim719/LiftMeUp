@@ -4,7 +4,7 @@ Guidance for Claude Code (and any human) working in this repo.
 
 ## What this is
 
-**Riser** — a web app that gives commercial property managers a single, prioritized view of every elevator's NYC DOB compliance status across their portfolio. Full requirements: `docs/prd/Riser-PRD.md`. Current sprint: `docs/sprints/` (highest-numbered `sprint-NN.md`).
+**LiftMeUp** — a web app that gives commercial property managers a single, prioritized view of every elevator's NYC DOB compliance status across their portfolio. Full requirements: `docs/prd/LiftMeUp-PRD.md`. Current sprint: `docs/sprints/` (highest-numbered `sprint-NN.md`).
 
 The MVP is a Django 6 + DRF backend (`backend/`) and a React 19 + TypeScript + Vite frontend (`frontend/`), single-tenant with no authentication (see `docs/adr/0002-no-auth-for-mvp.md` — confirm this assumption with the team before the demo if it hasn't been confirmed yet).
 

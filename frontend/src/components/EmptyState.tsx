@@ -26,7 +26,7 @@ export interface EmptyStateProps {
  * ledger</h2>`, so this heading is an `<h3>` to keep the document outline
  * correctly nested.
  *
- * PRD's "Getting started (empty state)" sub-journey (docs/prd/Riser-PRD.md)
+ * PRD's "Getting started (empty state)" sub-journey (docs/prd/LiftMeUp-PRD.md)
  * points at the address-lookup fast start as the primary path, with the
  * manual "Add a building" / "Add an elevator" forms as the fallback for
  * addresses DOB doesn't resolve. Those forms now live on the separate
@@ -105,7 +105,7 @@ export function EmptyState({ onSeeded, onNavigateToPortfolio }: EmptyStateProps)
       */}
       <div className={styles.altPath}>
         <p className={styles.altPathLede}>
-          Or, skip ahead — populate this view with a realistic sample portfolio to see Riser in
+          Or, skip ahead — populate this view with a realistic sample portfolio to see LiftMeUp in
           action right away.
         </p>
         {seedError && (

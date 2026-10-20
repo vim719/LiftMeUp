@@ -3,7 +3,7 @@
 DRF's default exception handler only recognizes :class:`~rest_framework.exceptions.APIException`
 (and a couple of Django built-ins) and returns ``None`` for anything else, which lets Django's
 own machinery turn the exception into an HTML debug page (in ``DEBUG`` mode) or a bare, unlogged
-500. :func:`riser_exception_handler` wraps the default handler so every unrecognized exception
+500. :func:`liftmeup_exception_handler` wraps the default handler so every unrecognized exception
 still produces a clean, structured JSON error response and gets logged.
 """
 
@@ -16,7 +16,7 @@ from rest_framework.views import exception_handler
 logger = logging.getLogger(__name__)
 
 
-def riser_exception_handler(exc: Exception, context: dict[str, Any]) -> Response:
+def liftmeup_exception_handler(exc: Exception, context: dict[str, Any]) -> Response:
     """Convert any exception into a DRF ``Response``, logging unrecognized ones.
 
     Delegates to DRF's default :func:`rest_framework.views.exception_handler` first, which

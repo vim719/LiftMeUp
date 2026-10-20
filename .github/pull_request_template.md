@@ -4,7 +4,7 @@
 
 ## PRD requirement / sprint task
 
-<!-- Link the docs/prd/Riser-PRD.md requirement and/or docs/sprints/sprint-NN.md task this closes. -->
+<!-- Link the docs/prd/LiftMeUp-PRD.md requirement and/or docs/sprints/sprint-NN.md task this closes. -->
 
 ## Scope
 

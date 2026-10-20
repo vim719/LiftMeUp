@@ -1,4 +1,4 @@
-"""URL configuration for the Riser backend.
+"""URL configuration for the LiftMeUp backend.
 
 Routes ``/admin/`` to the Django admin site and ``/api/`` to the
 compliance app's API (buildings, elevators, and the ledger).

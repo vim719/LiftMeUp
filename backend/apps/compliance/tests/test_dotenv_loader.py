@@ -34,33 +34,33 @@ class TestLoadLocalEnv:
         self, tmp_path: Path, clean_environ: dict[str, str]
     ) -> None:
         """A variable defined only in the file lands in ``os.environ``."""
-        os.environ.pop("RISER_TEST_DOTENV_VAR", None)
+        os.environ.pop("LIFTMEUP_TEST_DOTENV_VAR", None)
         env_file = tmp_path / ".env"
-        env_file.write_text("RISER_TEST_DOTENV_VAR=from-dotenv-file\n")
+        env_file.write_text("LIFTMEUP_TEST_DOTENV_VAR=from-dotenv-file\n")
 
         load_local_env(env_file)
 
-        assert os.environ["RISER_TEST_DOTENV_VAR"] == "from-dotenv-file"
+        assert os.environ["LIFTMEUP_TEST_DOTENV_VAR"] == "from-dotenv-file"
 
     def test_does_not_override_an_already_exported_shell_variable(
         self, tmp_path: Path, clean_environ: dict[str, str]
     ) -> None:
         """A value already exported in the shell wins over the same key in the file."""
-        os.environ["RISER_TEST_DOTENV_VAR"] = "from-shell"
+        os.environ["LIFTMEUP_TEST_DOTENV_VAR"] = "from-shell"
         env_file = tmp_path / ".env"
-        env_file.write_text("RISER_TEST_DOTENV_VAR=from-dotenv-file\n")
+        env_file.write_text("LIFTMEUP_TEST_DOTENV_VAR=from-dotenv-file\n")
 
         load_local_env(env_file)
 
-        assert os.environ["RISER_TEST_DOTENV_VAR"] == "from-shell"
+        assert os.environ["LIFTMEUP_TEST_DOTENV_VAR"] == "from-shell"
 
     def test_missing_env_file_is_a_silent_no_op(
         self, tmp_path: Path, clean_environ: dict[str, str]
     ) -> None:
         """A missing ``.env`` file does not raise and leaves the environment untouched."""
-        os.environ.pop("RISER_TEST_DOTENV_VAR", None)
+        os.environ.pop("LIFTMEUP_TEST_DOTENV_VAR", None)
         missing_file = tmp_path / "does-not-exist.env"
 
         load_local_env(missing_file)
 
-        assert "RISER_TEST_DOTENV_VAR" not in os.environ
+        assert "LIFTMEUP_TEST_DOTENV_VAR" not in os.environ

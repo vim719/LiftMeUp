@@ -20,8 +20,8 @@ def api_client() -> APIClient:
 def building(db: None) -> Building:
     """Create and return a persisted :class:`Building`."""
     return Building.objects.create(
-        name="10 Riser Plaza",
-        address="10 Riser Plaza, New York, NY 10001",
+        name="10 LiftMeUp Plaza",
+        address="10 LiftMeUp Plaza, New York, NY 10001",
     )
 
 

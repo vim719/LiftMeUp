@@ -5,15 +5,15 @@ import logging
 import pytest
 from rest_framework.exceptions import NotFound
 
-from apps.compliance.exceptions import riser_exception_handler
+from apps.compliance.exceptions import liftmeup_exception_handler
 
 
 class _FakeView:
     """A stand-in view class, used only for its ``__name__`` in log output."""
 
 
-class TestRiserExceptionHandler:
-    """Tests for :func:`apps.compliance.exceptions.riser_exception_handler`."""
+class TestLiftMeUpExceptionHandler:
+    """Tests for :func:`apps.compliance.exceptions.liftmeup_exception_handler`."""
 
     def test_bare_exception_returns_clean_500_envelope(
         self, caplog: pytest.LogCaptureFixture
@@ -22,7 +22,7 @@ class TestRiserExceptionHandler:
         context = {"view": _FakeView()}
 
         with caplog.at_level(logging.ERROR):
-            response = riser_exception_handler(ValueError("boom"), context)
+            response = liftmeup_exception_handler(ValueError("boom"), context)
 
         assert response is not None
         assert response.status_code == 500
@@ -40,7 +40,7 @@ class TestRiserExceptionHandler:
         context = {"view": _FakeView()}
 
         with caplog.at_level(logging.ERROR):
-            riser_exception_handler(ValueError("boom"), context)
+            liftmeup_exception_handler(ValueError("boom"), context)
 
         assert any(record.levelno == logging.ERROR for record in caplog.records)
         assert "Unhandled exception in _FakeView" in caplog.text
@@ -49,7 +49,7 @@ class TestRiserExceptionHandler:
         """A recognized DRF ``APIException`` passes through unchanged, not the 500 envelope."""
         context = {"view": _FakeView()}
 
-        response = riser_exception_handler(NotFound("nope"), context)
+        response = liftmeup_exception_handler(NotFound("nope"), context)
 
         assert response is not None
         assert response.status_code == 404

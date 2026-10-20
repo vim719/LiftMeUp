@@ -59,7 +59,7 @@ class TestSeedDemoData:
         """Seeded buildings use the curated real addresses, not old placeholders."""
         call_command("seed_demo_data")
         addresses = set(Building.objects.values_list("address", flat=True))
-        assert "10 Riser Plaza, New York, NY 10001" not in addresses
+        assert "10 LiftMeUp Plaza, New York, NY 10001" not in addresses
         assert addresses <= {address for _, address in SEED_ADDRESSES}
 
     def test_elevators_carry_the_devices_real_last_inspection_date(self) -> None:

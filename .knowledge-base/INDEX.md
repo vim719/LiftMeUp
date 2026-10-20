@@ -1,4 +1,4 @@
-# Riser Knowledge Base — Index
+# LiftMeUp Knowledge Base — Index
 
 Fast-reference lookup for Claude Code agents working in this repo. Each row links to a leaf file with a syntax cheatsheet, project-specific gotchas, a minimal example, and links back to the official docs it was grounded in. This is a quick-reference cheat sheet, not exhaustive documentation — when in doubt, follow the References links in the leaf file.
 

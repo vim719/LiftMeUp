@@ -1,4 +1,4 @@
-"""Site-wide middleware for the Riser backend."""
+"""Site-wide middleware for the LiftMeUp backend."""
 
 from collections.abc import Callable
 
@@ -8,7 +8,7 @@ from django.http import HttpRequest, HttpResponse
 class NoindexMiddleware:
     """Add ``X-Robots-Tag: noindex`` to every response.
 
-    Riser is deployed publicly with no auth (``docs/adr/0002-no-auth-for-mvp.md``),
+    LiftMeUp is deployed publicly with no auth (``docs/adr/0002-no-auth-for-mvp.md``),
     so responses are marked noindex until auth exists. Reversible once that
     changes (see issue #93).
     """

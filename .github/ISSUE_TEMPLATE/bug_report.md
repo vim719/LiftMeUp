@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Something in Riser is broken or behaving incorrectly
+about: Something in LiftMeUp is broken or behaving incorrectly
 title: "fix: "
 labels: bug
 ---
@@ -27,7 +27,7 @@ labels: bug
 
 ## Relevant PRD requirement (if applicable)
 
-<!-- Link the requirement from docs/prd/Riser-PRD.md section 3, if this is a regression against a P0/P1/P2 item. -->
+<!-- Link the requirement from docs/prd/LiftMeUp-PRD.md section 3, if this is a regression against a P0/P1/P2 item. -->
 
 ## Additional context
 

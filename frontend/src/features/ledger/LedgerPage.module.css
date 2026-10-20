@@ -390,7 +390,7 @@
 }
 
 /* Matches the "drop box" treatment from the v3 design pass
-   (docs/design/riser-executive-dashboard.html's .select-navy) — same
+   (docs/design/liftmeup-executive-dashboard.html's .select-navy) — same
    navy-tinted field + custom chevron as the portfolio forms' selects
    (frontend/src/features/portfolio/forms.module.css), so filter controls
    and add-elevator controls read as the same visual language. */

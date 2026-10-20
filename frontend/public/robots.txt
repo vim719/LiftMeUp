@@ -1,4 +1,4 @@
-# Riser is public with no auth (docs/adr/0002-no-auth-for-mvp.md), so
+# LiftMeUp is public with no auth (docs/adr/0002-no-auth-for-mvp.md), so
 # everything is disallowed until auth exists (issue #93). AI-crawler user
 # agents are listed explicitly, on purpose, rather than left to be covered
 # only by the wildcard rule below (robots.txt is voluntary compliance, not

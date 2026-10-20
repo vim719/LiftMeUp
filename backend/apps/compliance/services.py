@@ -1,6 +1,6 @@
 """Core compliance-risk calculation engine.
 
-This module is the deterministic heart of Riser's value proposition: it
+This module is the deterministic heart of LiftMeUp's value proposition: it
 turns an elevator's last inspection date and inspection type into a
 statutory due date, and turns that due date (compared against "today")
 into a triage :class:`Status`. Due dates and statuses are always computed

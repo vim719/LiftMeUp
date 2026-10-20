@@ -33,7 +33,7 @@
 }
 
 /* Brand block: an inline mark (a rounded rust-fill square with two simple
-   up/down glyphs) alongside the RI/SER wordmark, plus a divider-separated
+   up/down glyphs) alongside the LIFT/MEUP wordmark, plus a divider-separated
    subtitle — grafted onto the existing header row without disturbing
    ThemeToggle/PortfolioReset's placement. */
 .brand {
