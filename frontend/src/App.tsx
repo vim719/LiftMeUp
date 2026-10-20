@@ -217,8 +217,8 @@ function App() {
                   />
                 </svg>
                 <h1>
-                  <span className={styles.wordmarkRust}>RI</span>
-                  <span className={styles.wordmarkNavy}>SER</span>
+                  <span className={styles.wordmarkRust}>LIFT</span>
+                  <span className={styles.wordmarkNavy}>MEUP</span>
                 </h1>
               </span>
               <span className={styles.brandSub}>Elevator Portfolio Management</span>

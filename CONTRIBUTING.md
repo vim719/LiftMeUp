@@ -1,4 +1,4 @@
-# Contributing to Riser
+# Contributing to LiftMeUp
 
 ## Team
 
@@ -22,7 +22,7 @@ Commit messages must never include an AI co-author trailer (e.g. `Co-Authored-By
 
 ## Sprint tracking
 
-Work is tracked in one-week sprints (two of them cover the full MVP window) as version-controlled markdown files under `docs/sprints/`. At the start of each cycle, copy `docs/sprints/TEMPLATE.md` to `docs/sprints/sprint-NN.md` (incrementing NN), fill in the sprint goal and the PRD requirement IDs/priorities in scope (from `docs/prd/Riser-PRD.md` section 3), and have each collaborator maintain their own checklist subsection. The `/new-sprint` Claude Code skill automates the file-creation part of this. This is intentionally lightweight and lives in git, not an external tool.
+Work is tracked in one-week sprints (two of them cover the full MVP window) as version-controlled markdown files under `docs/sprints/`. At the start of each cycle, copy `docs/sprints/TEMPLATE.md` to `docs/sprints/sprint-NN.md` (incrementing NN), fill in the sprint goal and the PRD requirement IDs/priorities in scope (from `docs/prd/LiftMeUp-PRD.md` section 3), and have each collaborator maintain their own checklist subsection. The `/new-sprint` Claude Code skill automates the file-creation part of this. This is intentionally lightweight and lives in git, not an external tool.
 
 Future upgrade path (not built now): once the team wants heavier project-management tooling, this could migrate to GitHub Projects/Issues/ Milestones.
 

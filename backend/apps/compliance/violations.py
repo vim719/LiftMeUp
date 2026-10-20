@@ -6,7 +6,7 @@ Socrata resources alongside the existing ``e5aq-a4j2`` device feed
 (:mod:`apps.compliance.dob`):
 
 * **DOB Safety Violations** (``855j-jady``) — device-level civil
-  penalties, joinable by ``device_number`` (same identifier Riser already
+  penalties, joinable by ``device_number`` (same identifier LiftMeUp already
   stores as ``Elevator.dob_device_number``). Has no dollar amount.
 * **DOB ECB Violations** (``6bgk-3dad``) — OATH/ECB-adjudicated summonses
   with real dollar amounts (``balance_due``), but only joinable by

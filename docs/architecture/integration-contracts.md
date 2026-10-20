@@ -1,6 +1,6 @@
 # Frontend ↔ backend contracts & external API integration spec
 
-Companion to `docs/prd/Riser-PRD.md` (requirements) and `docs/sprints/day-by-day-plan.md` (schedule). This document is the single source of truth for exact request/response shapes — the schedule references it rather than repeating shapes inline, so there's one place to update when a contract changes.
+Companion to `docs/prd/LiftMeUp-PRD.md` (requirements) and `docs/sprints/day-by-day-plan.md` (schedule). This document is the single source of truth for exact request/response shapes — the schedule references it rather than repeating shapes inline, so there's one place to update when a contract changes.
 
 ## 1. Current contract (baseline, already implemented)
 

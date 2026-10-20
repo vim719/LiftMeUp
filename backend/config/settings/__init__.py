@@ -1,4 +1,4 @@
-"""Settings package for the Riser backend.
+"""Settings package for the LiftMeUp backend.
 
 The concrete settings module is selected via the ``DJANGO_SETTINGS_MODULE``
 environment variable (see ``manage.py``, ``config/wsgi.py``, and

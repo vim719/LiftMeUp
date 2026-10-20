@@ -12,7 +12,7 @@ warn() { printf '  [warn] %s\n' "$1"; warn_count=$((warn_count + 1)); }
 fail() { printf '  [fail] %s\n' "$1"; fail_count=$((fail_count + 1)); }
 section() { printf '\n== %s ==\n' "$1"; }
 
-echo "=== Riser environment check (read-only) ==="
+echo "=== LiftMeUp environment check (read-only) ==="
 
 section "Toolchain"
 if command -v uv >/dev/null 2>&1; then

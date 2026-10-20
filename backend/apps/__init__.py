@@ -1,1 +1,1 @@
-"""Local application package for the Riser backend."""
+"""Local application package for the LiftMeUp backend."""

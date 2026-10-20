@@ -1,4 +1,4 @@
-"""Shared Django settings for the Riser backend.
+"""Shared Django settings for the LiftMeUp backend.
 
 Environment-specific settings modules (:mod:`config.settings.local` and
 :mod:`config.settings.production`) import ``*`` from this module and
@@ -79,7 +79,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": None,
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
-    "EXCEPTION_HANDLER": "apps.compliance.exceptions.riser_exception_handler",
+    "EXCEPTION_HANDLER": "apps.compliance.exceptions.liftmeup_exception_handler",
 }
 
 #: Minimal console logging, shared by local development (``runserver``) and

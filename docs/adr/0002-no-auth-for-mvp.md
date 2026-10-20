@@ -6,7 +6,7 @@ Accepted — confirmed by the team (Frontend Dev, Backend Dev, Architecture Lead
 
 ## Context
 
-`docs/prd/Riser-PRD.md` section 3 (User Journeys, P0–P2 requirements) does not describe a login, signup, or session-management journey anywhere. The PRD's "Users & Needs" section distinguishes a primary user (property manager) from a secondary, view-only user (building owner), but no requirement ties that distinction to an authentication or authorization mechanism, and the Non-Goals section is silent on auth as well.
+`docs/prd/LiftMeUp-PRD.md` section 3 (User Journeys, P0–P2 requirements) does not describe a login, signup, or session-management journey anywhere. The PRD's "Users & Needs" section distinguishes a primary user (property manager) from a secondary, view-only user (building owner), but no requirement ties that distinction to an authentication or authorization mechanism, and the Non-Goals section is silent on auth as well.
 
 ## Decision
 

@@ -28,19 +28,19 @@ class TestBuildingAPI:
 
     def test_create_building(self, api_client: APIClient) -> None:
         """POST /api/buildings/ creates a new building."""
-        payload = {"name": "20 Riser Ave", "address": "20 Riser Ave, New York, NY"}
+        payload = {"name": "20 LiftMeUp Ave", "address": "20 LiftMeUp Ave, New York, NY"}
         response = api_client.post("/api/buildings/", payload, format="json")
         assert response.status_code == status.HTTP_201_CREATED
-        assert Building.objects.filter(name="20 Riser Ave").exists()
+        assert Building.objects.filter(name="20 LiftMeUp Ave").exists()
 
     def test_create_building_without_bin_returns_null_bin(self, api_client: APIClient) -> None:
         """POST /api/buildings/ with no ``bin`` (manual-entry flow) still works
         and echoes back ``bin: null`` rather than omitting the field."""
-        payload = {"name": "20 Riser Ave", "address": "20 Riser Ave, New York, NY"}
+        payload = {"name": "20 LiftMeUp Ave", "address": "20 LiftMeUp Ave, New York, NY"}
         response = api_client.post("/api/buildings/", payload, format="json")
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data["bin"] is None
-        assert Building.objects.get(name="20 Riser Ave").bin is None
+        assert Building.objects.get(name="20 LiftMeUp Ave").bin is None
 
     def test_create_building_with_bin_persists_and_returns_it(self, api_client: APIClient) -> None:
         """POST /api/buildings/ with a resolved ``bin`` (address-lookup save

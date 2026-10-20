@@ -34,7 +34,7 @@ class Building(models.Model):
 
 
 class InspectionType(models.TextChoices):
-    """NYC DOB elevator inspection categories tracked by Riser."""
+    """NYC DOB elevator inspection categories tracked by LiftMeUp."""
 
     CAT1 = "CAT1", "Category 1 (Annual)"
     CAT5 = "CAT5", "Category 5 (Five-Year)"

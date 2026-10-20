@@ -11,7 +11,7 @@ labels: task
 
 ## PRD requirement (if applicable)
 
-<!-- Copy the requirement text + priority tag (P0/P1/P2) from docs/prd/Riser-PRD.md section 3. -->
+<!-- Copy the requirement text + priority tag (P0/P1/P2) from docs/prd/LiftMeUp-PRD.md section 3. -->
 
 ## Sprint
 

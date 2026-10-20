@@ -46,7 +46,7 @@
 
 /* Panel header: icon badge + eyebrow-style title/subtitle, matching the v3
    design mockup's .panel-head/.panel-icon/.panel-title (docs/design/
-   riser-executive-dashboard.html) for the Building Lookup, Add Building, and
+   liftmeup-executive-dashboard.html) for the Building Lookup, Add Building, and
    Add Device cards. */
 .panelHead {
   display: flex;
@@ -154,7 +154,7 @@
 }
 
 /* Matches the "drop box" treatment from the v3 design pass
-   (docs/design/riser-executive-dashboard.html's .select-navy): a light
+   (docs/design/liftmeup-executive-dashboard.html's .select-navy): a light
    navy-tinted field with a custom chevron instead of the browser default,
    rather than looking like an unstyled native control. Colors come from the
    --navy-soft/--navy-soft-border/--navy-soft-text trio (same one used by
@@ -236,7 +236,7 @@
 /* Same navy-chip treatment as .field select, applied to the "Last inspection
    date" input on ElevatorForm's create panel — matches the mockup's
    .select-navy being reused on both <select> and <input type="date">
-   (docs/design/riser-executive-dashboard.html's #addDate). No chevron here,
+   (docs/design/liftmeup-executive-dashboard.html's #addDate). No chevron here,
    so (unlike .field select) the token trio alone is enough — no separate
    dark-mode override block needed. */
 .dateNavy {

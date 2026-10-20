@@ -15,7 +15,7 @@ Official docs: https://render.com/docs/blueprint-spec
 
 ## Project-Specific Gotchas
 
-- **This repo has `render.yaml` configured at the root.** It defines two web services (`riser-backend` running Python/Django via gunicorn, `riser-frontend` static site publishing `dist`) and a database (`riser-db`). Both services use `buildFilter` to ensure changes under `backend/` or `frontend/` only trigger their respective service redeploys, and markdown/docs changes trigger neither.
+- **This repo has `render.yaml` configured at the root.** It defines two web services (`liftmeup-backend` running Python/Django via gunicorn, `liftmeup-frontend` static site publishing `dist`) and a database (`liftmeup-db`). Both services use `buildFilter` to ensure changes under `backend/` or `frontend/` only trigger their respective service redeploys, and markdown/docs changes trigger neither.
 - `buildFilter.paths` for the backend service should also include any shared root-level config that affects it (e.g. if a root `docs/` or `.github/` change should _not_ trigger a backend redeploy, make sure the glob is scoped tightly to `backend/**` rather than defaulting to "whole repo" — Render's default without a `buildFilter` is to rebuild on any change anywhere in the repo, which defeats the point of a monorepo split).
 - The static frontend service needs its `buildCommand` to actually run `npm run build` (which itself runs `tsc -b && vite build` per `frontend/package.json`) — a `staticPublishPath` misconfigured relative to `rootDir` (e.g. pointing at `frontend/dist` when `rootDir` is already `frontend`, versus just `dist`) is a common source of "build succeeded, deploy serves nothing" failures.
 - Postgres for the backend should be declared under top-level `databases:`, then wired into the backend service's `envVars` via `fromDatabase` — matches this repo's `psycopg[binary]` and `django-environ` dependencies (`django-environ` typically reads a single `DATABASE_URL`-style env var, so the `connectionString` property is likely the right one to reference, not individual `host`/`port`/`user` fields).
@@ -25,12 +25,12 @@ Official docs: https://render.com/docs/blueprint-spec
 ```yaml
 # render.yaml
 databases:
-  - name: riser-db
+  - name: liftmeup-db
     plan: basic-256mb
     region: oregon
 
 services:
-  - name: riser-backend
+  - name: liftmeup-backend
     type: web
     runtime: python
     rootDir: backend
@@ -40,9 +40,9 @@ services:
     startCommand: uv run gunicorn config.wsgi:application
     envVars:
       - key: DATABASE_URL
-        fromDatabase: { name: riser-db, property: connectionString }
+        fromDatabase: { name: liftmeup-db, property: connectionString }
 
-  - name: riser-frontend
+  - name: liftmeup-frontend
     type: web
     runtime: static
     rootDir: frontend

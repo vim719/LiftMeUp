@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 export type Theme = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
 
-const STORAGE_KEY = "riser-theme";
+const STORAGE_KEY = "liftmeup-theme";
 const DARK_MEDIA_QUERY = "(prefers-color-scheme: dark)";
 
 function isTheme(value: unknown): value is Theme {

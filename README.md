@@ -1,8 +1,8 @@
-# Riser
+# LiftMeUp
 
 [![codecov](https://codecov.io/gh/vim719/LiftMeUp/graph/badge.svg)](https://codecov.io/gh/vim719/LiftMeUp) [![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/) [![Django](https://img.shields.io/badge/Django-6.0-092E20?style=flat&logo=django&logoColor=white)](https://www.djangoproject.com/) [![Django REST Framework](https://img.shields.io/badge/DRF-3.17-red?style=flat&logo=django&logoColor=white)](https://www.django-rest-framework.org/) [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=black)](https://react.dev/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/) [![uv](https://img.shields.io/badge/uv-astral-DE5D43?style=flat&logo=astral&logoColor=white)](https://astral.sh/uv/)
 
-A web app that gives commercial property managers a single, prioritized view of every elevator's NYC DOB compliance status across their portfolio — automatically calculating due dates and surfacing Delinquent/Warning/Compliant risk so nothing slips past a filing deadline. Full product requirements: `docs/prd/Riser-PRD.md`.
+A web app that gives commercial property managers a single, prioritized view of every elevator's NYC DOB compliance status across their portfolio — automatically calculating due dates and surfacing Delinquent/Warning/Compliant risk so nothing slips past a filing deadline. Full product requirements: `docs/prd/LiftMeUp-PRD.md`.
 
 ## Problem
 
@@ -10,12 +10,12 @@ Commercial property managers are risking thousands of dollars in municipal fines
 
 ## Solution
 
-Riser solves this by consolidating every elevator's compliance status into a single, prioritized ledger. The system automatically calculates each device's next statutory due date (based on inspection type and date) and assigns it a **Compliant**, **Warning** (due within 30 days), or **Delinquent** (past due) status so managers can see what needs attention first without manual date-tracking across buildings.
+LiftMeUp solves this by consolidating every elevator's compliance status into a single, prioritized ledger. The system automatically calculates each device's next statutory due date (based on inspection type and date) and assigns it a **Compliant**, **Warning** (due within 30 days), or **Delinquent** (past due) status so managers can see what needs attention first without manual date-tracking across buildings.
 
 Managers can add buildings and elevators in two ways:
 
 - **Manually** — enter a building's name and address, then add each elevator's device identifier, inspection type, and last inspection date directly.
-- **Via DOB address-lookup** — enter a building's street address, and Riser automatically pulls that building's known elevators and their latest CAT1/CAT5 filing dates from NYC's public DOB NOW Open Data feed (no BIN entry required, no re-typing dates that DOB already has on file). Managers can review and override the pulled data before saving, and fall back to manual entry for devices absent from the public dataset.
+- **Via DOB address-lookup** — enter a building's street address, and LiftMeUp automatically pulls that building's known elevators and their latest CAT1/CAT5 filing dates from NYC's public DOB NOW Open Data feed (no BIN entry required, no re-typing dates that DOB already has on file). Managers can review and override the pulled data before saving, and fall back to manual entry for devices absent from the public dataset.
 
 **Additional features:**
 
@@ -32,7 +32,7 @@ Managers can add buildings and elevators in two ways:
 
 ## Pipeline
 
-How a manager's actions flow through Riser, from onboarding a building to seeing what it's costing them:
+How a manager's actions flow through LiftMeUp, from onboarding a building to seeing what it's costing them:
 
 ```mermaid
 flowchart TD
@@ -64,7 +64,7 @@ Two things worth calling out about this shape:
 
 **Ledger tab (default landing)** — the executive summary stat band, on-demand AI briefing, and the portfolio ledger ranked by urgency (Delinquent → Warning → Compliant), with building filter chips, search, and a status filter:
 
-![Riser's Ledger tab, showing the executive stat band, AI Executive Briefing panel, and portfolio ledger with building filter chips and a Delinquent-status row](docs/screenshots/ledger-overview.jpg)
+![LiftMeUp's Ledger tab, showing the executive stat band, AI Executive Briefing panel, and portfolio ledger with building filter chips and a Delinquent-status row](docs/screenshots/ledger-overview.jpg)
 
 **Editing an elevator** — clicking Edit on a ledger row auto-switches to the Manage Portfolio tab with that elevator's form pre-filled and focused, ready to update its device identifier, inspection type, or last inspection date:
 
@@ -72,11 +72,11 @@ Two things worth calling out about this shape:
 
 **Manage Portfolio tab** — building lookup (auto-populate from NYC DOB), manual Add Building/Add Device forms, and the buildings list with fine-exposure totals:
 
-![Riser's Manage Portfolio tab, showing the Building Lookup panel, Add Building and Add Device manual-entry forms, and a buildings list with outstanding-fine totals](docs/screenshots/manage-portfolio.jpg)
+![LiftMeUp's Manage Portfolio tab, showing the Building Lookup panel, Add Building and Add Device manual-entry forms, and a buildings list with outstanding-fine totals](docs/screenshots/manage-portfolio.jpg)
 
 **Empty state** — a new portfolio with no elevators yet tracked, with guidance pointing to the Manage Portfolio tab:
 
-![Riser's empty-state message: "No elevators yet," on the Ledger tab, with numbered guidance pointing to the Manage Portfolio tab's lookup/add-building/add-elevator forms](docs/screenshots/empty-state.jpg)
+![LiftMeUp's empty-state message: "No elevators yet," on the Ledger tab, with numbered guidance pointing to the Manage Portfolio tab's lookup/add-building/add-elevator forms](docs/screenshots/empty-state.jpg)
 
 
 
@@ -164,7 +164,7 @@ scripts/    Hook scripts (env check, commit-msg guard, format-on-save, etc.)
 
 ## Deployment
 
-Deployed on [Render](https://render.com) via `render.yaml` — two independently-deployed services (`riser-backend`, `riser-frontend`), split so a change under one directory never redeploys the other, and a docs-only change redeploys neither. Connecting the repo to Render and enabling "only deploy if checks pass" against GitHub CI is a one-time manual step in the Render dashboard.
+Deployed on [Render](https://render.com) via `render.yaml` — two independently-deployed services (`liftmeup-backend`, `liftmeup-frontend`), split so a change under one directory never redeploys the other, and a docs-only change redeploys neither. Connecting the repo to Render and enabling "only deploy if checks pass" against GitHub CI is a one-time manual step in the Render dashboard.
 
 ## Working with Claude Code in this repo
 

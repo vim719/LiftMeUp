@@ -14,7 +14,7 @@ describe("logger", () => {
 
       logError("Something went wrong", error, context);
 
-      expect(spy).toHaveBeenCalledWith("[Riser] Something went wrong", error, context);
+      expect(spy).toHaveBeenCalledWith("[LiftMeUp] Something went wrong", error, context);
     });
 
     it("defaults context to an empty object when omitted", () => {
@@ -23,7 +23,7 @@ describe("logger", () => {
 
       logError("Something went wrong", error);
 
-      expect(spy).toHaveBeenCalledWith("[Riser] Something went wrong", error, {});
+      expect(spy).toHaveBeenCalledWith("[LiftMeUp] Something went wrong", error, {});
     });
   });
 
@@ -34,7 +34,7 @@ describe("logger", () => {
 
       logWarn("Unrecognized status", context);
 
-      expect(spy).toHaveBeenCalledWith("[Riser] Unrecognized status", context);
+      expect(spy).toHaveBeenCalledWith("[LiftMeUp] Unrecognized status", context);
     });
 
     it("defaults context to an empty object when omitted", () => {
@@ -42,7 +42,7 @@ describe("logger", () => {
 
       logWarn("Unrecognized status");
 
-      expect(spy).toHaveBeenCalledWith("[Riser] Unrecognized status", {});
+      expect(spy).toHaveBeenCalledWith("[LiftMeUp] Unrecognized status", {});
     });
   });
 });

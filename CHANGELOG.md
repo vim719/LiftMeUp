@@ -17,7 +17,7 @@
 - add a typed-confirmation portfolio reset for demo purposes
 - **backend**: expose dob_device_number and seed demo data from live DOB lookups
 - **frontend**: add SoftwareApplication JSON-LD structured data
-- **frontend**: add llms.txt describing Riser the product
+- **frontend**: add llms.txt describing LiftMeUp the product
 - **frontend**: add explicit AI-crawler entries to robots.txt
 - **frontend**: add noindex baseline and placeholder social card
 - **backend**: add X-Robots-Tag noindex middleware
@@ -29,16 +29,16 @@
 - **backend**: add DOB address-lookup endpoint
 - **frontend**: add DOB address-lookup form and review screen
 - **backend**: implement AI risk-narration briefing endpoint
-- **frontend**: replace default favicon with Riser brand mark
+- **frontend**: replace default favicon with LiftMeUp brand mark
 
 ### Fix
 
-- **infra**: switch riser-frontend to commit-based auto-deploy trigger
+- **infra**: switch liftmeup-frontend to commit-based auto-deploy trigger
 - **backend**: auto-load .env for local development
 - **compliance**: filter inactive DOB devices and aggregate safety + ECB violations per building
 - **frontend**: show Building name as visibly required in address-lookup review
 - **frontend**: scroll and focus the edit form when Edit is clicked (#118)
-- **render**: switch riser-backend to autoDeployTrigger: commit
+- **render**: switch liftmeup-backend to autoDeployTrigger: commit
 - **frontend**: make dark-mode CSS and the theme toggle respect each other
 - **frontend**: fix dark-mode contrast, add theme toggle, and wire dob_device_number
 - **docs**: correct PR numbers, dates, and attribution in merge-session log

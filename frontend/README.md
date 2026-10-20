@@ -1,6 +1,6 @@
-# Riser Frontend
+# LiftMeUp Frontend
 
-Frontend single-page application (SPA) for **Riser** built with React 19, TypeScript, and Vite.
+Frontend single-page application (SPA) for **LiftMeUp** built with React 19, TypeScript, and Vite.
 
 ## Available Scripts
 

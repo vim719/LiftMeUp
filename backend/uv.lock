@@ -621,7 +621,7 @@ wheels = [
 ]
 
 [[package]]
-name = "riser-backend"
+name = "liftmeup-backend"
 version = "0.8.1"
 source = { virtual = "." }
 dependencies = [

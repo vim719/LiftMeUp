@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen } from "@testing-library/react";
 import { ThemeProvider, useTheme } from "./theme";
 
-const STORAGE_KEY = "riser-theme";
+const STORAGE_KEY = "liftmeup-theme";
 
 function TestConsumer() {
   const { theme, resolvedTheme, setTheme } = useTheme();

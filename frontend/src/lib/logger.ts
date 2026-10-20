@@ -6,9 +6,9 @@
  */
 
 export function logError(message: string, error: unknown, context?: Record<string, unknown>): void {
-  console.error(`[Riser] ${message}`, error, context ?? {});
+  console.error(`[LiftMeUp] ${message}`, error, context ?? {});
 }
 
 export function logWarn(message: string, context?: Record<string, unknown>): void {
-  console.warn(`[Riser] ${message}`, context ?? {});
+  console.warn(`[LiftMeUp] ${message}`, context ?? {});
 }

@@ -1,4 +1,4 @@
-<title>Riser — Sprint 02 ledger polish</title>
+<title>LiftMeUp — Sprint 02 ledger polish</title>
 
 <style>
   /* ---------------------------------------------------------------
@@ -72,7 +72,7 @@
 
   * { box-sizing: border-box; }
 
-  .riser-page {
+  .liftmeup-page {
     font-family: var(--font-ui);
     font-size: 16px;
     line-height: 1.5;
@@ -86,7 +86,7 @@
     gap: var(--sp-7);
   }
 
-  .riser-page :focus-visible {
+  .liftmeup-page :focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
@@ -567,16 +567,16 @@
   .replay-btn:hover { background: var(--focus-subtle); }
 
   @media (max-width: 640px) {
-    .riser-page { padding: var(--sp-4) var(--sp-4) var(--sp-6); }
+    .liftmeup-page { padding: var(--sp-4) var(--sp-4) var(--sp-6); }
     .ledger-toolbar { align-items: flex-start; flex-direction: column; }
   }
 </style>
 
-<div class="riser-page">
+<div class="liftmeup-page">
 
   <header class="masthead">
     <div class="masthead-heading">
-      <h1>Riser</h1>
+      <h1>LiftMeUp</h1>
       <p>NYC elevator compliance ledger, ranked by risk across your portfolio.</p>
     </div>
     <span class="draft-tag">Design draft &middot; Sprint 02 P1</span>
@@ -790,7 +790,7 @@
         <span class="eyebrow">Design detail</span>
         <h2>Status-change highlight</h2>
       </div>
-      <button class="replay-btn" type="button" onclick="riserReplayDemo()">&#8635; Replay update</button>
+      <button class="replay-btn" type="button" onclick="liftMeUpReplayDemo()">&#8635; Replay update</button>
     </div>
     <p class="detail-copy">When a manager edits an elevator's last-inspection date, its status, due date, and row rank change together. A brief accent sweep on the row makes that recalculation legible instead of silent. Loads in the &ldquo;before&rdquo; state &mdash; press Replay to watch 245 Park Avenue&rsquo;s Elevator&nbsp;2 get logged as inspected.</p>
 
@@ -839,7 +839,7 @@
 </div>
 
 <script>
-  function riserReplayDemo() {
+  function liftMeUpReplayDemo() {
     var row = document.getElementById('demo-row');
     if (!row) return;
     row.classList.remove('is-after', 'is-highlighting');
@@ -848,8 +848,8 @@
     requestAnimationFrame(function () {
       row.classList.add('is-after', 'is-highlighting');
     });
-    clearTimeout(row._riserTimer);
-    row._riserTimer = setTimeout(function () {
+    clearTimeout(row._liftMeUpTimer);
+    row._liftMeUpTimer = setTimeout(function () {
       row.classList.remove('is-highlighting');
     }, 1800);
   }
