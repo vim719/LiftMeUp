@@ -1,0 +1,330 @@
+<title>LiftMeUp Pitch Sheet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an elevator-shaft rail on the left; each section is a "floor" in the order the pitch is told. */
+:root{
+  --bg:#f3f4f2; --surface:#ffffff; --fg:#17201f; --muted:#5a6866; --line:#d5dad8;
+  --accent:#0c6b63; --accent-ink:#ffffff; --accent-soft:#dff0ed;
+  --ok:#1f7a3d; --ok-soft:#dcf1e2; --warn:#a15c00; --warn-soft:#fbebc9; --bad:#b3261e; --bad-soft:#fadbd8;
+  --f-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --f-body:'Figtree','Segoe UI',system-ui,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1615; --surface:#172220; --fg:#e6eeec; --muted:#9bb0ac; --line:#2a3b38;
+  --accent:#4fd1c0; --accent-ink:#06201c; --accent-soft:#16332f;
+  --ok:#6fd48c; --ok-soft:#173523; --warn:#f0b04a; --warn-soft:#3a2b0e; --bad:#ff8a80; --bad-soft:#3d1a17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1615; --surface:#172220; --fg:#e6eeec; --muted:#9bb0ac; --line:#2a3b38;
+  --accent:#4fd1c0; --accent-ink:#06201c; --accent-soft:#16332f;
+  --ok:#6fd48c; --ok-soft:#173523; --warn:#f0b04a; --warn-soft:#3a2b0e; --bad:#ff8a80; --bad-soft:#3d1a17; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--f-body);margin:0;
+  padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:48px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(2.4rem,7vw,4.2rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,3.5vw,2rem);font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.1rem;font-weight:800}
+p{margin:0}
+.mono{font-family:var(--f-mono)}
+.label{font:500 .75rem/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lead{font-size:1.2rem;max-width:62ch}
+
+/* floors */
+.floor{display:grid;grid-template-columns:64px minmax(0,1fr);gap:20px}
+.rail{position:relative;display:flex;flex-direction:column;align-items:center}
+.rail::after{content:"";flex:1;width:2px;background:var(--line);margin-top:8px}
+.lamp{width:56px;height:40px;border-radius:6px;background:#0b1211;color:#ffb347;border:2px solid var(--line);
+  display:grid;place-items:center;font:500 1rem var(--f-mono);letter-spacing:.05em;font-variant-numeric:tabular-nums}
+.body{display:flex;flex-direction:column;gap:20px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;min-width:0}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.grid>*{min-width:0}
+
+/* hero */
+.hero{display:flex;flex-direction:column;gap:16px}
+.hero .tag{display:flex;flex-wrap:wrap;gap:8px}
+.pill{font:500 .78rem var(--f-mono);padding:5px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}.pill.warn{background:var(--warn-soft);color:var(--warn)}.pill.bad{background:var(--bad-soft);color:var(--bad)}
+
+/* run of show */
+.timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+.seg{padding:10px 12px;border-radius:6px;background:var(--accent-soft);min-width:0}
+.seg b{display:block;font:500 .8rem var(--f-mono);color:var(--accent)}
+.seg span{font-size:.88rem}
+@media(max-width:720px){.timeline{grid-template-columns:1fr}}
+
+/* eli5 */
+.eli5{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.eli5 .step{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.eli5 svg{width:100%;height:84px}
+.big-quote{font:800 clamp(1.3rem,3vw,1.7rem)/1.25 var(--f-display);text-wrap:balance}
+
+/* stat tiles */
+.stat b{display:block;font:800 2.2rem/1 var(--f-display);font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:.9rem}
+
+/* traffic light demo */
+.ledger{width:100%;border-collapse:collapse;font-size:.92rem}
+.ledger th{text-align:left;font:500 .72rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line)}
+.ledger td{padding:9px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto}
+
+/* flow */
+.flow{display:grid;gap:10px}
+.node{display:grid;grid-template-columns:36px minmax(0,1fr);gap:14px;align-items:start;padding:14px;border-radius:10px;border:1px solid var(--line);background:var(--surface)}
+.node .n{width:36px;height:36px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:500 .95rem var(--f-mono)}
+.node .arrow{grid-column:2;color:var(--muted)}
+.node code,.code{font:.82rem var(--f-mono);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:1px 6px;word-break:break-all}
+.node p{margin-top:4px}
+.node.llm .n{background:var(--warn);color:#fff}
+.src{font:500 .75rem var(--f-mono);color:var(--accent);letter-spacing:.04em}
+
+/* api table */
+.api{width:100%;border-collapse:collapse;min-width:760px;font-size:.9rem}
+.api th{text-align:left;font:500 .72rem var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px;border-bottom:2px solid var(--line)}
+.api td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.api td:first-child{font-weight:700}
+
+/* stack */
+.stack{display:grid;gap:10px}
+.layer{display:grid;grid-template-columns:130px minmax(0,1fr);gap:14px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);align-items:start}
+.layer .name{font:800 1rem var(--f-display)}
+.layer .name small{display:block;font:400 .75rem var(--f-mono);color:var(--muted);margin-top:3px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.chip{font:500 .78rem var(--f-mono);padding:3px 8px;border-radius:4px;background:var(--bg);border:1px solid var(--line)}
+@media(max-width:560px){.layer{grid-template-columns:1fr}}
+
+.script{display:flex;flex-direction:column;gap:14px}
+.beat{display:grid;grid-template-columns:76px minmax(0,1fr);gap:14px}
+.beat .t{font:500 .85rem var(--f-mono);color:var(--accent)}
+.note{color:var(--muted);font-size:.9rem}
+.hl{background:var(--warn-soft);color:var(--warn);padding:12px 14px;border-radius:8px;font-size:.92rem}
+ul{margin:0;padding-left:1.15rem;display:flex;flex-direction:column;gap:6px}
+@media(max-width:560px){.floor{grid-template-columns:48px minmax(0,1fr);gap:12px}.lamp{width:46px;font-size:.85rem}}
+</style>
+
+<div class="wrap">
+
+<!-- HERO -->
+<header class="hero">
+  <span class="label">Hackathon pitch sheet · 2 minutes</span>
+  <h1>LiftMeUp</h1>
+  <p class="lead">One ranked list of every elevator a property manager is responsible for in New York City, telling them which inspection filing is late, which is almost late, and what it may already cost.</p>
+  <div class="tag"><span class="pill bad">Delinquent</span><span class="pill warn">Warning · due ≤ 30 days</span><span class="pill ok">Compliant</span></div>
+  <div class="timeline" aria-label="Two minute run of show">
+    <div class="seg"><b>0:00–0:20</b><span>Problem</span></div>
+    <div class="seg"><b>0:20–0:45</b><span>Solution + live address lookup</span></div>
+    <div class="seg"><b>0:45–1:20</b><span>How NYC Open Data powers it</span></div>
+    <div class="seg"><b>1:20–1:40</b><span>Tech + AI briefing</span></div>
+    <div class="seg"><b>1:40–2:00</b><span>Who it helps + close</span></div>
+  </div>
+</header>
+
+<!-- F1 ELI5 -->
+<section class="floor">
+  <div class="rail"><div class="lamp">1</div></div>
+  <div class="body">
+    <span class="label">Explain it like I'm 5</span>
+    <h2>A sticker chart for elevators</h2>
+    <div class="eli5">
+      <div class="step">
+        <svg viewBox="0 0 120 84" role="img" aria-label="Tall buildings with elevators"><rect x="8" y="20" width="30" height="60" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><rect x="44" y="6" width="30" height="74" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><rect x="80" y="30" width="30" height="50" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><rect x="53" y="50" width="12" height="16" fill="var(--accent)"/><rect x="17" y="52" width="12" height="16" fill="var(--accent)"/><rect x="89" y="52" width="12" height="16" fill="var(--accent)"/></svg>
+        <p><b>Big buildings have elevators.</b> A grown-up called a property manager looks after lots of them.</p>
+      </div>
+      <div class="step">
+        <svg viewBox="0 0 120 84" role="img" aria-label="Calendar with a check mark"><rect x="14" y="12" width="92" height="64" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><rect x="14" y="12" width="92" height="16" rx="6" fill="var(--accent)"/><path d="M40 52l12 12 28-28" fill="none" stroke="var(--ok)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p><b>Every elevator must be checked, and the city must be told.</b> Once a year for one kind of check, once every five years for a bigger one.</p>
+      </div>
+      <div class="step">
+        <svg viewBox="0 0 120 84" role="img" aria-label="Coins and a warning sign"><circle cx="38" cy="46" r="24" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="3"/><text x="38" y="55" text-anchor="middle" font-size="26" font-weight="800" fill="var(--warn)" font-family="sans-serif">$</text><path d="M86 18l24 42H62z" fill="var(--bad-soft)" stroke="var(--bad)" stroke-width="3" stroke-linejoin="round"/><rect x="84" y="30" width="4" height="14" fill="var(--bad)"/><rect x="84" y="49" width="4" height="4" fill="var(--bad)"/></svg>
+        <p><b>Forget, and the city makes you pay.</b> Thousands of dollars for each elevator, and more every month it stays late.</p>
+      </div>
+      <div class="step">
+        <svg viewBox="0 0 120 84" role="img" aria-label="Green, yellow and red lights"><rect x="40" y="4" width="40" height="76" rx="10" fill="#0b1211" stroke="var(--line)" stroke-width="2"/><circle cx="60" cy="22" r="9" fill="#e05a50"/><circle cx="60" cy="42" r="9" fill="#f0b04a"/><circle cx="60" cy="62" r="9" fill="#4dbf72"/></svg>
+        <p><b>LiftMeUp is the traffic light.</b> It sorts every elevator into red, yellow or green so you fix the red ones first.</p>
+      </div>
+    </div>
+    <div class="card"><p class="big-quote">"You type in a building's address. LiftMeUp asks the city's public notebook what elevators live there and when they were last checked, then tells you who is late."</p></div>
+  </div>
+</section>
+
+<!-- F2 PROBLEM -->
+<section class="floor">
+  <div class="rail"><div class="lamp">2</div></div>
+  <div class="body">
+    <span class="label">Problem statement</span>
+    <h2>Commercial property managers risk thousands in fines because no single system tracks fragmented, recurring elevator deadlines across buildings.</h2>
+    <div class="grid">
+      <div class="card stat"><b>84,000+</b><span>registered elevator and escalator devices under NYC DOB, 63,000+ of them passenger elevators</span></div>
+      <div class="card stat"><b>$3,000</b><span>fine per elevator for a missed CAT1 (annual) filing, plus $150 per month late</span></div>
+      <div class="card stat"><b>$5,000</b><span>fine per elevator for a missed CAT5 (five-year) filing, plus $250 per month late</span></div>
+    </div>
+    <div class="card">
+      <h3>How managers cope today</h3>
+      <ul style="margin-top:10px"><li>Spreadsheets and paper inspection certificates.</li><li>Looking up each building by hand on NYC's open-data portal.</li><li>Checking one building at a time, so nothing is ranked by urgency.</li></ul>
+      <p class="note" style="margin-top:12px">The data is public. What is missing is a portfolio-wide, risk-ranked view of it. Figures from the project's PRD, which cites the NYC DOB Elevator Report.</p>
+    </div>
+  </div>
+</section>
+
+<!-- F3 SOLUTION -->
+<section class="floor">
+  <div class="rail"><div class="lamp">3</div></div>
+  <div class="body">
+    <span class="label">Solution</span>
+    <h2>Type an address. Get a ranked compliance ledger.</h2>
+    <div class="grid">
+      <div class="card"><h3>Auto-fill from the city</h3><p style="margin-top:6px">Address becomes a building ID, then the building's elevators and last filing dates are pulled from NYC Open Data. Managers review and override, or add devices by hand.</p></div>
+      <div class="card"><h3>Due dates, computed live</h3><p style="margin-top:6px">CAT1 is due 1 year after the last filing, CAT5 after 5 years. Nothing is stored, so editing a date updates the status instantly.</p></div>
+      <div class="card"><h3>Money at risk</h3><p style="margin-top:6px">An "Open violation" badge per elevator and a total outstanding fine balance per building, from real city records.</p></div>
+      <div class="card"><h3>AI briefing</h3><p style="margin-top:6px">One click gives a short written summary: what is late, what is next, which building to deal with first, with dollar figures.</p></div>
+    </div>
+    <div class="card scroll">
+      <span class="label">Example ledger (illustrative rows, not live data)</span>
+      <table class="ledger" style="margin-top:10px;min-width:520px">
+        <thead><tr><th>Building</th><th>Device</th><th>Type</th><th>Last filed</th><th>Due</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Tower A</td><td class="mono">EL-3</td><td>CAT1</td><td>2025-03-01</td><td>2026-03-01</td><td><span class="pill bad">Delinquent</span></td></tr>
+          <tr><td>Harbor Plaza</td><td class="mono">EL-1</td><td>CAT5</td><td>2021-11-20</td><td>2026-11-20</td><td><span class="pill warn">Warning</span></td></tr>
+          <tr><td>Midtown Lofts</td><td class="mono">EL-2</td><td>CAT1</td><td>2026-06-15</td><td>2027-06-15</td><td><span class="pill ok">Compliant</span></td></tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:10px">Sorted Delinquent, then Warning, then Compliant, then by earliest due date.</p>
+    </div>
+  </div>
+</section>
+
+<!-- F4 API -->
+<section class="floor">
+  <div class="rail"><div class="lamp">4</div></div>
+  <div class="body">
+    <span class="label">NYC Open Data, complete breakdown</span>
+    <h2>Three city datasets and one city geocoder, no API key</h2>
+    <p class="lead">Everything is called from the Django backend over plain HTTPS GET (Python <span class="code">urllib</span>), anonymously, with a 15 second timeout. The browser never talks to NYC directly.</p>
+
+    <div class="flow">
+      <div class="node"><div class="n">1</div><div>
+        <h3>Address becomes a building ID (BIN)</h3>
+        <p class="src">NYC PLANNING GEOSEARCH v2 · geosearch.planninglabs.nyc</p>
+        <p><span class="code">GET /v2/search?text=350 Fifth Avenue&amp;size=5</span> returns ranked matches. The BIN sits at <span class="code">properties.addendum.pad.bin</span>. If matches span more than one BIN (for example "200 Water St" in Manhattan and Brooklyn) the user picks one, never the first guess.</p>
+      </div></div>
+      <div class="node"><div class="n">2</div><div>
+        <h3>BIN becomes the building's elevators</h3>
+        <p class="src">DATASET e5aq-a4j2 · DOB NOW: Elevator Safety Compliance</p>
+        <p><span class="code">GET /resource/e5aq-a4j2.json?bin=1001686&amp;$limit=1000</span> returns every device with <span class="code">device_number</span>, status, <span class="code">cat1_latest_report_filed</span> and <span class="code">cat5_latest_report_filed</span>.</p>
+      </div></div>
+      <div class="node"><div class="n">3</div><div>
+        <h3>Devices become editable draft rows</h3>
+        <p class="src">PURE PYTHON, NO NETWORK</p>
+        <p>Only <b>Active</b> devices are kept. A device with both filing dates becomes two drafts (CAT1 and CAT5) so each ledger row has one inspection type. The manager reviews, overrides and saves.</p>
+      </div></div>
+      <div class="node"><div class="n">4</div><div>
+        <h3>Is this elevator in trouble right now?</h3>
+        <p class="src">DATASET 855j-jady · DOB Safety Violations (device level, updated daily)</p>
+        <p><span class="code">$where=device_number in ('1P766',…) AND violation_status='Active'</span> run as one batched call for the whole ledger. A match shows the "Open violation" badge. This feed has no dollar amounts.</p>
+      </div></div>
+      <div class="node"><div class="n">5</div><div>
+        <h3>What does this building owe?</h3>
+        <p class="src">DATASET 6bgk-3dad · DOB ECB Violations (building level, updated weekdays)</p>
+        <p><span class="code">$where=bin in ('1001686','1036156',…)</span> in a single call for every building. Rows with <span class="code">balance_due &gt; 0</span> are summed into the building's outstanding fine total. Open violation count combines 855j-jady and 6bgk-3dad.</p>
+      </div></div>
+      <div class="node llm"><div class="n">6</div><div>
+        <h3>Plain-English briefing</h3>
+        <p class="src">CLAUDE API · claude-haiku-4-5, temperature 0.2, 300 max tokens</p>
+        <p>The computed ledger, violation flags and building fine totals are passed to Claude, which writes a short prioritized summary. It only runs on button click, skips the call for an empty portfolio, and a failure returns a graceful "unavailable" message rather than breaking the page.</p>
+      </div></div>
+    </div>
+
+    <div class="card scroll">
+      <table class="api">
+        <thead><tr><th>Source</th><th>Join key</th><th>Level</th><th>Gives us</th><th>Powers</th></tr></thead>
+        <tbody>
+          <tr><td>GeoSearch v2</td><td>Address text</td><td>Building</td><td>BIN, label, borough</td><td>Address lookup and disambiguation picker</td></tr>
+          <tr><td>e5aq-a4j2</td><td>bin</td><td>Device</td><td>Device number, status, CAT1/CAT5 filing dates</td><td>Auto-populated elevators and due-date math</td></tr>
+          <tr><td>855j-jady</td><td>device_number (and bin)</td><td>Device</td><td>Active or resolved violation status</td><td>"Open violation" badge, violation counts</td></tr>
+          <tr><td>6bgk-3dad</td><td>bin only</td><td>Building</td><td>balance_due on summonses</td><td>Outstanding fine total per building</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="hl"><b>Judges may ask: why fines per building, not per elevator?</b> The ECB feed has no device identifier, so a per-elevator dollar figure could not be attributed reliably. The team made that a documented product decision: device-level flag from one dataset, building-level dollars from the other.</div>
+    <div class="card"><h3>Engineering details worth a mention</h3>
+      <ul style="margin-top:10px">
+        <li>Batched queries: one SoQL call for the whole portfolio, so cost stays flat as buildings are added.</li>
+        <li>SoQL values are quote-escaped before being placed in the <span class="code">$where</span> clause.</li>
+        <li>Lookup always returns HTTP 200 with a <span class="code">reason</span> (address_not_found, no_devices_on_file, ambiguous_match, upstream_unavailable) so the UI can fall back to manual entry.</li>
+        <li>The old GeoSearch v1 endpoint now returns HTTP 410; the team found and moved to v2.</li>
+        <li>No Socrata app token needed at demo scale. External calls are mocked in tests.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- F5 STACK -->
+<section class="floor">
+  <div class="rail"><div class="lamp">5</div></div>
+  <div class="body">
+    <span class="label">Tech stack</span>
+    <h2>What each tool does in the build</h2>
+    <div class="stack">
+      <div class="layer"><div class="name">Frontend<small>manager's screen</small></div><div>
+        <div class="chips"><span class="chip">React 19</span><span class="chip">TypeScript</span><span class="chip">Vite</span><span class="chip">CSS Modules</span></div>
+        <p>Ledger, timeline, stat band, detail drawer, AI briefing panel, light and dark theme.</p></div></div>
+      <div class="layer"><div class="name">Backend API<small>the brain</small></div><div>
+        <div class="chips"><span class="chip">Python</span><span class="chip">Django 6</span><span class="chip">Django REST Framework</span><span class="chip">dateutil</span></div>
+        <p>Models for Building and Elevator, due-date and status engine, and the clients for the NYC endpoints. Status is computed on every read, never stored.</p></div></div>
+      <div class="layer"><div class="name">Data<small>memory</small></div><div>
+        <div class="chips"><span class="chip">PostgreSQL</span><span class="chip">psycopg</span></div>
+        <p>Stores only what the manager entered: buildings (with cached BIN) and elevators (with DOB device number).</p></div></div>
+      <div class="layer"><div class="name">AI<small>the explainer</small></div><div>
+        <div class="chips"><span class="chip">Anthropic SDK</span><span class="chip">Claude Haiku 4.5</span></div>
+        <p>Turns ledger rows and fine totals into a short executive briefing.</p></div></div>
+      <div class="layer"><div class="name">Quality<small>trust</small></div><div>
+        <div class="chips"><span class="chip">pytest</span><span class="chip">Vitest</span><span class="chip">Playwright</span><span class="chip">axe accessibility</span><span class="chip">ruff</span><span class="chip">mypy + ty</span><span class="chip">ESLint</span><span class="chip">Lighthouse CI</span></div>
+        <p>Test-first development with a 90% coverage gate on both halves, enforced by pre-commit hooks and CI.</p></div></div>
+      <div class="layer"><div class="name">Ship<small>delivery</small></div><div>
+        <div class="chips"><span class="chip">uv</span><span class="chip">GitHub Actions</span><span class="chip">Conventional Commits</span><span class="chip">Render (Blueprint)</span><span class="chip">gunicorn + WhiteNoise</span></div>
+        <p>Two Render services (backend, frontend) plus a Postgres database, deployed on commit after CI passes. Built with Claude Code subagents for backend, frontend, UX, integration and docs.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- F6 WHO -->
+<section class="floor">
+  <div class="rail"><div class="lamp">6</div></div>
+  <div class="body">
+    <span class="label">Beneficiaries and potential clients</span>
+    <h2>Who gets value, and who could pay</h2>
+    <div class="grid">
+      <div class="card"><h3>Beneficiaries (from the PRD)</h3>
+        <ul style="margin-top:10px"><li><b>Property managers</b> running multi-building portfolios: primary users, personally accountable for filings.</li><li><b>Building owners:</b> want read-only visibility into their portfolio's compliance.</li><li><b>Tenants and the public:</b> fewer lapses in elevator safety paperwork.</li></ul></div>
+      <div class="card"><h3>Potential clients (our suggestions)</h3>
+        <ul style="margin-top:10px"><li>Commercial property management firms</li><li>REITs and real-estate owners with NYC office towers</li><li>Co-op and condo boards with managing agents</li><li>Hospitals, universities and hotels with many elevators</li><li>Elevator maintenance and inspection contractors who file on clients' behalf</li><li>Insurers and lenders monitoring risk across a book of buildings</li></ul>
+        <p class="note" style="margin-top:10px">The project's docs name managers and owners. The rest are extrapolations for the pitch.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- F7 SCRIPT -->
+<section class="floor">
+  <div class="rail"><div class="lamp">7</div></div>
+  <div class="body">
+    <span class="label">Speaker script · about 280 words</span>
+    <h2>Two minutes, spoken</h2>
+    <div class="card script">
+      <div class="beat"><span class="t">0:00</span><p>New York has over 84,000 registered elevators. Each one has filing deadlines with the city: an annual inspection and a five-year one. Miss one and it's a $3,000 to $5,000 fine per elevator, plus monthly penalties. Property managers track this in spreadsheets and paper, one building at a time.</p></div>
+      <div class="beat"><span class="t">0:20</span><p>LiftMeUp fixes that. Type in a building's address. We find its city building ID, pull its elevators and last filing dates, and instantly rank every elevator red, yellow or green. <i class="note">(Demo: type an address, show the ledger.)</i></p></div>
+      <div class="beat"><span class="t">0:45</span><p>The data is real, and it's free. We use NYC's geocoder to turn the address into a building number, then three NYC Open Data datasets: Elevator Safety Compliance for devices and filing dates, Safety Violations to flag elevators with an open violation, and ECB Violations to total what each building still owes. No keys, no scraping, and each is one batched call for the whole portfolio.</p></div>
+      <div class="beat"><span class="t">1:20</span><p>It's built with React and TypeScript on the front, Django and Postgres behind it, with every due date computed live so an edit updates the ranking immediately. One click asks Claude to write a short briefing: what's late, what's next, and what it could cost. <i class="note">(Click the AI briefing.)</i></p></div>
+      <div class="beat"><span class="t">1:40</span><p>Property managers get fewer fines, owners get visibility, and the same approach fits any firm managing elevators across many buildings. The data was always public. We made it useful. We're LiftMeUp.</p></div>
+    </div>
+    <div class="card"><h3>If you only remember one line</h3><p class="big-quote" style="margin-top:8px">The data was always public. LiftMeUp turns it into a ranked to-do list that saves money.</p></div>
+  </div>
+</section>
+
+<footer class="note">Sourced from the LiftMeUp repository README, PRD, ADR 0003, integration-contracts doc and backend source (dob.py, violations.py, services.py, narration.py). The ledger rows above are illustrative. Statutory fine amounts come from the PRD; the repo notes they have not yet been checked against the primary NYC rule text.</footer>
+</div>

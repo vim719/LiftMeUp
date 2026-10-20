@@ -1,0 +1,39 @@
+<section id="flow" data-transition="fade" style="background:#F2F3EF;color:#14211F;font-family:'Figtree', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#0C6B63">How NYC Open Data is used</p>
+<h2 style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:80px;font-weight:800;line-height:1.1;color:#14211F">Address in, ranked risk out</h2>
+</div>
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FBFBF8;padding:28px;border:1px solid #D5DAD8;border-radius:16px">
+<p style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:56px;font-weight:800;line-height:1;color:#0C6B63">1</p>
+<h3 style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:34px;font-weight:700;line-height:1.15;color:#14211F">GeoSearch v2</h3>
+<p style="font-size:24px;font-weight:600;color:#0C6B63">NYC Planning</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5A57">Turns the typed address into a building ID. Asks the user to pick when two buildings match.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FBFBF8;padding:28px;border:1px solid #D5DAD8;border-radius:16px">
+<p style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:56px;font-weight:800;line-height:1;color:#0C6B63">2</p>
+<h3 style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:34px;font-weight:700;line-height:1.15;color:#14211F">Elevator Safety Compliance</h3>
+<p style="font-size:24px;font-weight:600;color:#0C6B63">e5aq-a4j2</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5A57">Returns the building’s devices and their latest annual and five-year filing dates.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FBFBF8;padding:28px;border:1px solid #D5DAD8;border-radius:16px">
+<p style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:56px;font-weight:800;line-height:1;color:#0C6B63">3</p>
+<h3 style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:34px;font-weight:700;line-height:1.15;color:#14211F">Safety Violations</h3>
+<p style="font-size:24px;font-weight:600;color:#0C6B63">855j-jady</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5A57">Flags each elevator with an active violation. One batched call for the whole ledger.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FBFBF8;padding:28px;border:1px solid #D5DAD8;border-radius:16px">
+<p style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:56px;font-weight:800;line-height:1;color:#0C6B63">4</p>
+<h3 style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:34px;font-weight:700;line-height:1.15;color:#14211F">ECB Violations</h3>
+<p style="font-size:24px;font-weight:600;color:#0C6B63">6bgk-3dad</p>
+<p style="font-size:26px;line-height:1.4;color:#4A5A57">Adds up the unpaid fine balance for every building. One batched call.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#14211F;padding:28px;border-radius:16px">
+<p style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:56px;font-weight:800;line-height:1;color:#F2B04A">5</p>
+<h3 style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:34px;font-weight:700;line-height:1.15;color:#F2B04A">Claude Haiku 4.5</h3>
+<p style="font-size:24px;font-weight:600;color:#9FDCD2">Anthropic API</p>
+<p style="font-size:26px;line-height:1.4;color:#D5E2DE">Turns the ledger and fine totals into a short written briefing, on click.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.35;color:#14211F">Plain HTTPS requests from the Django backend. No API key needed, and the browser never calls NYC directly.</p>
+</section>
