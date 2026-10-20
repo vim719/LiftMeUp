@@ -1,0 +1,16 @@
+<section id="api" data-transition="fade" style="background:#0E1B1A;color:#EAF1EE;font-family:'Figtree', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between;gap:36px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#F2B04A">Data breakdown</p>
+<h2 style="font-family:'Bricolage Grotesque', Georgia, serif;font-size:72px;font-weight:800;line-height:1.1;color:#EAF1EE">Four sources, each joined on one key</h2>
+</div>
+<table style="font-family:'Figtree', Arial, sans-serif;font-size:26px;color:#EAF1EE">
+<tr style="background:#1F3431"><th style="width:17%;color:#B9CCC7;text-align:left">Source</th><th style="width:16%;color:#B9CCC7;text-align:left">Join key</th><th style="width:11%;color:#B9CCC7;text-align:left">Level</th><th style="width:27%;color:#B9CCC7;text-align:left">Gives us</th><th style="width:29%;color:#B9CCC7;text-align:left">Powers</th></tr>
+<tr style="background:#162826"><td>GeoSearch v2</td><td>Address text</td><td>Building</td><td>Building ID, label, borough</td><td>Address lookup and picker</td></tr>
+<tr style="background:#0E1B1A"><td>e5aq-a4j2</td><td>bin</td><td>Device</td><td>Device number, status, filing dates</td><td>Auto-filled elevators and due dates</td></tr>
+<tr style="background:#162826"><td>855j-jady</td><td>device_number</td><td>Device</td><td>Active or resolved status</td><td>Open-violation badge</td></tr>
+<tr style="background:#0E1B1A"><td>6bgk-3dad</td><td>bin</td><td>Building</td><td>balance_due on summonses</td><td>Unpaid fines per building</td></tr>
+</table>
+<div style="background:#3A2B0E;padding:28px 36px;border-radius:16px">
+<p style="font-size:28px;line-height:1.4;color:#F6D9A3">Fines are per building because the fine feed has no device ID. The violation flag is per elevator. This split is a documented product decision.</p>
+</div>
+</section>
